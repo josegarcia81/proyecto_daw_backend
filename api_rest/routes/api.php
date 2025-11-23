@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /**
  * API Routes
@@ -36,4 +37,6 @@ use Illuminate\Support\Facades\Route;
  * 
  * @see https://laravel.com/docs/10.x/routing#route-prefixes
  */
+
+Route::get('/public/post/getAllUsers', [UserController::class, 'getAllUsers']);
 Route::get('/public/post/getUser/{id}', [UserController::class, 'getUser']);

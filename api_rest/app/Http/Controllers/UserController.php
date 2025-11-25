@@ -41,14 +41,6 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function getUser($id){
@@ -87,7 +79,15 @@ class UserController extends Controller
                 "message" => "Ocurrió un error con la base de datos",
                 "error" => $e->getMessage()
             ], 500);
+        }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
     }
 
     /**

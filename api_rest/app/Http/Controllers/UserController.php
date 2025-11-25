@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function getAllUsers(){
         try{
-            $users = User::select('id','usuario')->paginate(15);
+            $users = User::select('id','usuario');
             // $user1 = new User();
             //     $user1->id = 0;
             //     $user1->name = 'Paco';

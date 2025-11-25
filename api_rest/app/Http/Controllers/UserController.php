@@ -48,18 +48,18 @@ class UserController extends Controller
         
 
         try{
-            
-            if (is_numeric($id) && $id == 0) {
-                $user = new User();
-                    $user->id = 0;
-                    $user->name = 'Paco';
+            $usuario = User::find($id);
+            if ($usuario && $usuario instanceof User && $usuario->id > 0) {
+                // $user = new User();
+                //     $user->id = 0;
+                //     $user->name = 'Paco';
                 
                 return response()->json([
                                         "status" => "success",
                                         "code" => 200,
                                         "time" => now()->toIso8601String(), // Fecha en formato ISO-8601
-                                        "message" => "Incidencia creada correctamente",
-                                        "data" => $user
+                                        "message" => "Usuario encontrado",
+                                        "data" => $usuario
                                     ], 200);
             } else {
                 return response()->json([

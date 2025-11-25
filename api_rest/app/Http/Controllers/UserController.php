@@ -13,15 +13,15 @@ class UserController extends Controller
      */
     public function getAllUsers(){
         try{
-            // $users = User::select('id','usuario')->paginate(15);
-            $user1 = new User();
-                $user1->id = 0;
-                $user1->name = 'Paco';
-            $user2 = new User();
-                $user2->id = 1;
-                $user2->name = 'Pedro';
+            $users = User::select('id','usuario')->paginate(15);
+            // $user1 = new User();
+            //     $user1->id = 0;
+            //     $user1->name = 'Paco';
+            // $user2 = new User();
+            //     $user2->id = 1;
+            //     $user2->name = 'Pedro';
             
-            $users = [$user1,$user2];
+            // $users = [$user1,$user2];
 
             return response()->json([
                 'status' => 'success',

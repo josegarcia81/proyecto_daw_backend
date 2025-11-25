@@ -66,7 +66,7 @@ class UserController extends Controller
                     "status" => "error",
                     "code" => 406,
                     "time" => now()->toIso8601String(),
-                    "message" => "Incidencia no encontrada",
+                    "message" => "Usuario no Encontrado",
                     "data" => null
                 ], 406);
             }

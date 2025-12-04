@@ -34,7 +34,7 @@ RUN composer dump-autoload --optimize
 RUN php artisan package:discover --ansi
 
 # Crear directorios y asignar permisos
-RUN mkdir -p storage bootstrap/cache \
+RUN mkdir -p storage/framework/views storage/framework/sessions storage/framework/cache storage/framework/testing storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
 # Exponer puerto 80

@@ -14,6 +14,12 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+#  --- FIX PARA RENDER --- 
+# Hacer que Apache escuche en el puerto dinámico $PORT
+RUN echo "Listen ${PORT}" > /etc/apache2/ports.conf
+RUN sed -ri -e "s!<VirtualHost \*:80>!<VirtualHost *:${PORT}>!g" /etc/apache2/sites-available/000-default.conf
+
+
 # Directorio de trabajo
 WORKDIR /var/www/html
 
@@ -23,7 +29,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copiar composer.json y composer.lock para cache
 COPY composer.json composer.lock ./
 
-# Instalar dependencias sin ejecutar scripts (para evitar errores de artisan)
+# Instalar dependencias
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Copiar el resto del proyecto
@@ -37,8 +43,8 @@ RUN php artisan package:discover --ansi
 RUN mkdir -p storage/framework/views storage/framework/sessions storage/framework/cache storage/framework/testing storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Exponer puerto 80
-EXPOSE 80
+# Exponer el puerto dinámico usado por Render
+EXPOSE ${PORT}
 
 # Comando de arranque de Apache
 CMD ["apache2-foreground"]

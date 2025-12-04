@@ -14,12 +14,6 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-#  --- FIX PARA RENDER --- 
-# Hacer que Apache escuche en el puerto dinámico $PORT
-RUN echo "Listen ${PORT}" > /etc/apache2/ports.conf
-RUN sed -ri -e "s!<VirtualHost \*:80>!<VirtualHost *:${PORT}>!g" /etc/apache2/sites-available/000-default.conf
-
-
 # Directorio de trabajo
 WORKDIR /var/www/html
 
@@ -43,8 +37,8 @@ RUN php artisan package:discover --ansi
 RUN mkdir -p storage/framework/views storage/framework/sessions storage/framework/cache storage/framework/testing storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Exponer el puerto dinámico usado por Render
-EXPOSE ${PORT}
+# Exponer puerto 80 (informativo)
+EXPOSE 80
 
-# Comando de arranque de Apache
-CMD ["apache2-foreground"]
+# Comando de arranque: Configura el puerto dinámicamente y arranca Apache
+CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /**
  * API Routes
@@ -10,33 +11,26 @@ use App\Http\Controllers\UserController;
  * routes are loaded by the RouteServiceProvider within a group which
  * is assigned the "api" middleware group. Enjoy building your API!
  * 
- * @see https://laravel.com/docs/10.x/routing#main-content
- * 
- * 
- * @see https://laravel.com/docs/10.x/controllers#resource-controllers
- * 
- * @see https://laravel.com/docs/10.x/eloquent#route-model-binding
- * 
- * @see https://laravel.com/docs/10.x/routing#route-parameters
- * 
- * @see https://laravel.com/docs/10.x/routing#route-groups
- * 
- * @see https://laravel.com/docs/10.x/routing#registering-routes
- * 
- * @see https://laravel.com/docs/10.x/routing#the-api-router
- * 
- * @see https://laravel.com/docs/10.x/routing#route-caching
- * 
- * @see https://laravel.com/docs/10.x/routing#route-names
- * 
- * @see https://laravel.com/docs/10.x/routing#route-closures
- * 
- * @see https://laravel.com/docs/10.x/routing#route-controllers
- * 
- * @see https://laravel.com/docs/10.x/routing#route-middleware
- * 
- * @see https://laravel.com/docs/10.x/routing#route-prefixes
  */
 
-Route::get('/public/post/getAllUsers', [UserController::class, 'getAllUsers']);
-Route::get('/public/post/getUser/{id}', [UserController::class, 'getUser']);
+// Rutas públicas de autenticación
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// Rutas protegidas que requieren autenticación
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    
+    // Rutas de usuario que ahora podrían requerir autenticación
+    Route::get('/users', [UserController::class, 'getAllUsers']);
+    Route::get('/users/{id}', [UserController::class, 'getUser']);
+    Route::post('/users', [UserController::class, 'createUser']);
+    Route::put('/users/{user}', [UserController::class, 'updateUser']);
+    Route::delete('/users/{user}', [UserController::class, 'deleteUser']);
+    
+    // Ruta para obtener el usuario esta autenticado / tiene la sesion vigente
+    // Se envia su token nada mas para verificar, devuelve el usuario autenticado
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});

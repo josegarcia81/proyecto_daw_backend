@@ -6,29 +6,37 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The primary key type and auto-incrementing.
      */
-    protected $primaryKey = 'id';
-    public $incrementing = true;
-    protected $keyType = 'int';
-    protected $table = 'usuarios';
+    protected $primaryKey = 'id'; // Definir nombre de la clave primaria
+    public $incrementing = true; // Definir que la clave primaria es autoincrementable
+    protected $keyType = 'int'; // Definir que la clave primaria es de tipo entero
+    protected $table = 'usuarios'; // Definir nombre de la tabla
+    public $timestamps = false; // Desactivar timestamps porque la tabla en AWS no tiene created_at/updated_at
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'usuario',
-        // 'name',
-        // 'email',
-        // 'password',
+        'nombre',
+        'apellido',
+        'email',
+        'password',
+        'provincia_id',
+        'ciudad_id',
+        'descripcion',
+        'horas_saldo',
+        'valoracion',
+        'rol_id',
     ];
 
     /**
@@ -37,22 +45,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        // 'password',
-        // 'remember_token',
+        'password',
+        'remember_token',
     ];
-
-    // /**
-    //  * Get the attributes that should be cast.
-    //  *
-    //  * @return array<string, string>
-    //  */
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'email_verified_at' => 'datetime',
-    //         'password' => 'hashed',
-    //     ];
-    // }
 
     /**
      * The attributes that should be cast.
@@ -60,7 +55,11 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        // 'email_verified_at' => 'datetime',
-        // 'password' => 'hashed',
+        'email_verified_at' => 'datetime',
+        'horas_saldo' => 'integer',
+        'valoraciones' => 'float',
+        'provincia_id' => 'integer',
+        'ciudad_id' => 'integer',
+        'rol_id' => 'integer',
     ];
 }

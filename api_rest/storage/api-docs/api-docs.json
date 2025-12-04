@@ -1,0 +1,986 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Proyecto DAW Backend API",
+        "description": "Documentación de la API REST del Proyecto DAW",
+        "contact": {
+            "email": "soporte@proyectodaw.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Servidor de desarrollo local"
+        },
+        {
+            "url": "https://proyecto-daw-backend.onrender.com/api",
+            "description": "Servidor de producción"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Registrar nuevo usuario",
+                "description": "Registra un nuevo usuario en el sistema y devuelve un token de autenticación",
+                "operationId": "register",
+                "requestBody": {
+                    "description": "Datos del nuevo usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "apellido",
+                                    "email",
+                                    "password",
+                                    "rol_id"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Pedro"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Garcia"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 150,
+                                        "example": "pedro.garcia@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 6,
+                                        "example": "password123"
+                                    },
+                                    "rol_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "provincia_id": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "nullable": true
+                                    },
+                                    "ciudad_id": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "nullable": true
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Usuario de prueba",
+                                        "nullable": true
+                                    },
+                                    "horas_saldo": {
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true
+                                    },
+                                    "valoracion": {
+                                        "type": "integer",
+                                        "example": 0,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "¡Usuario registrado exitosamente!"
+                                        },
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "1|abcdef123456..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Pedro"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "example": "Garcia"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pedro.garcia@example.com"
+                                                },
+                                                "rol_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "provincia_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "ciudad_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "descripcion": {
+                                                    "type": "string",
+                                                    "example": "Usuario de prueba"
+                                                },
+                                                "horas_saldo": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "valoracion": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "The email has already been taken."
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "description": "Autentica un usuario y devuelve un token de acceso",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Credenciales del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "pedro.garcia@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "¡Hola Juan!"
+                                        },
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "1|abcdef123456..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Pedro"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "example": "Garcia"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pedro.garcia@example.com"
+                                                },
+                                                "rol_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "provincia_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "ciudad_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "descripcion": {
+                                                    "type": "string",
+                                                    "example": "Usuario de prueba"
+                                                },
+                                                "horas_saldo": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "valoracion": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales inválidas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Credenciales inválidas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "description": "Cierra la sesión del usuario e invalida el token actual",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sesión cerrada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener todos los usuarios",
+                "operationId": "8a69dc0275bdae56a1723b3ea327576b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuarios obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Todos los usuarios obtenidos correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "pedro"
+                                                    },
+                                                    "apellido": {
+                                                        "type": "string",
+                                                        "example": "garcia"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "pedro.garcia@example.com"
+                                                    },
+                                                    "provincia_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "ciudad_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "descripcion": {
+                                                        "type": "string",
+                                                        "example": "Descripción del usuario"
+                                                    },
+                                                    "horas_saldo": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "valoracion": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "rol_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocurrió un error con la base de datos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Crear un nuevo usuario",
+                "operationId": "49b25cdfd1cc549029c3dfd6f39b4d60",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "apellido",
+                                    "email",
+                                    "password",
+                                    "rol_id"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Pedro"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "example": "Garcia"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "pedro.garcia@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secreto123"
+                                    },
+                                    "provincia_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ciudad_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Descripción del usuario"
+                                    },
+                                    "horas_saldo": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "valoracion": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "rol_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario creado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario creado correctamente"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Pedro"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "example": "Garcia"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pedro.garcia@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 422
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error de validación"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener un usuario específico",
+                "operationId": "b253b58cc9966940360ec90555bfe3ab",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario encontrado"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Pedro"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "example": "Garcia"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pedro.garcia@example.com"
+                                                },
+                                                "provincia_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "ciudad_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "descripcion": {
+                                                    "type": "string",
+                                                    "example": "Descripción del usuario"
+                                                },
+                                                "horas_saldo": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "valoracion": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "rol_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no Encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users/{user}": {
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualizar un usuario existente",
+                "operationId": "fc22c92e68abcad19df181142546005b",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Pedro"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "example": "Garcia"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "pedro.garcia@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nuevo_secreto123"
+                                    },
+                                    "provincia_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ciudad_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Descripción actualizada"
+                                    },
+                                    "horas_saldo": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "valoracion": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "rol_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario actualizado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario actualizado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\User]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar un usuario",
+                "operationId": "c516b696d1f95555cb432028b708b713",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario eliminado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado correctamente"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\User]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Autenticación mediante token Laravel Sanctum",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Usuarios",
+            "description": "Usuarios"
+        }
+    ]
+}

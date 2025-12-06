@@ -26,6 +26,9 @@ COPY . .
 RUN composer dump-autoload --optimize
 RUN php artisan package:discover --ansi
 
+# Publicar assets de L5-Swagger (CSS/JS para la documentación)
+RUN php artisan vendor:publish --provider="L5Swagger\L5SwaggerServiceProvider" --force
+
 RUN mkdir -p storage/framework/views storage/framework/sessions storage/framework/cache storage/framework/testing storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 

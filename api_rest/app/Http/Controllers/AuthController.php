@@ -21,14 +21,14 @@ class AuthController extends Controller{
      *         required=true,
      *         description="Datos del nuevo usuario",
      *         @OA\JsonContent(
-     *             required={"nombre","apellido","email","password","rol_id"},
+     *             required={"nombre","apellido","email","password","provincia_id","ciudad_id"},
      *             @OA\Property(property="nombre", type="string", maxLength=100, example="Pedro"),
      *             @OA\Property(property="apellido", type="string", maxLength=100, example="Garcia"),
      *             @OA\Property(property="email", type="string", format="email", maxLength=150, example="pedro.garcia@example.com"),
      *             @OA\Property(property="password", type="string", format="password", minLength=6, example="password123"),
-     *             @OA\Property(property="rol_id", type="integer", example=1),
-     *             @OA\Property(property="provincia_id", type="integer", nullable=true, example=1),
-     *             @OA\Property(property="ciudad_id", type="integer", nullable=true, example=1),
+     *             @OA\Property(property="rol_id", type="integer", example=3, description="Siempre se asigna rol 3 (no es necesario enviarlo)"),
+     *             @OA\Property(property="provincia_id", type="integer", example=1),
+     *             @OA\Property(property="ciudad_id", type="integer", example=1),
      *             @OA\Property(property="descripcion", type="string", maxLength=255, nullable=true, example="Usuario de prueba"),
      *             @OA\Property(property="horas_saldo", type="integer", nullable=true, example=5),
      *             @OA\Property(property="valoracion", type="integer", nullable=true, example=0)
@@ -74,9 +74,9 @@ class AuthController extends Controller{
             'apellido' => 'required|string|max:100',
             'email' => 'required|string|email|max:150|unique:usuarios,email',
             'password' => 'required|string|min:6', // Requiere campo 'password_confirmation' si se aniade => |confirmed,( eliminado, se confirma en frontend).
-            'rol_id' => 'required|integer|exists:roles,id',
-            'provincia_id' => 'nullable|integer|exists:provincia,id',
-            'ciudad_id' => 'nullable|integer|exists:ciudad,id',
+            'rol_id' => 'nullable|integer|exists:roles,id', // Opcional, se fuerza a 3
+            'provincia_id' => 'required|integer|exists:provincia,id',
+            'ciudad_id' => 'required|integer|exists:ciudad,id',
             'descripcion' => 'nullable|string|max:255',
             'horas_saldo' => 'nullable|integer',
             'valoracion' => 'nullable|integer',
@@ -92,7 +92,7 @@ class AuthController extends Controller{
             'apellido' => $request->apellido,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol_id' => $request->rol_id,
+            'rol_id' => 3, // Siempre rol 3 para registros públicos
             'provincia_id' => $request->provincia_id,
             'ciudad_id' => $request->ciudad_id,
             'descripcion' => $request->descripcion,

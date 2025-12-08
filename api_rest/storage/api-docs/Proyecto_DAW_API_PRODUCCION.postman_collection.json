@@ -277,6 +277,68 @@
                     "response": []
                 }
             ]
+        },
+        {
+            "name": "Common",
+            "item": [
+                {
+                    "name": "Get Provincias - Obtener Provincias",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/getProvincias",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "getProvincias"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Poblaciones - Obtener Poblaciones",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/getPoblaciones",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "getPoblaciones"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Poblaciones by Provincia - Filtrar por Provincia",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/getPoblaciones?provincia_id=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "getPoblaciones"
+                            ],
+                            "query": [
+                                {
+                                    "key": "provincia_id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
         }
     ],
     "variable": [

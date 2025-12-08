@@ -40,6 +40,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * Default attribute values.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'rol_id' => 3, // Valor por defecto para registro público
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>

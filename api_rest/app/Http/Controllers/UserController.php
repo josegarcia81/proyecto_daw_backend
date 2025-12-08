@@ -184,7 +184,7 @@ class UserController extends Controller
      *             @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
      *             @OA\Property(property="horas_saldo", type="integer", example=5),
      *             @OA\Property(property="valoracion", type="integer", example=0),
-     *             @OA\Property(property="rol_id", type="integer", example=1)
+     *             @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3")
      *         )
      *     ),
      *     @OA\Response(
@@ -234,7 +234,7 @@ class UserController extends Controller
                 'descripcion' => 'nullable|string',
                 'horas_saldo' => 'nullable|integer',
                 'valoracion' => 'nullable|numeric',
-                'rol_id' => 'required|integer|exists:roles,id',
+                'rol_id' => 'required|integer|in:2,3', // Solo roles 2 o 3
             ]);
 
             // Crear el nuevo usuario
@@ -303,7 +303,7 @@ class UserController extends Controller
      *             @OA\Property(property="descripcion", type="string", example="Descripción actualizada"),
      *             @OA\Property(property="horas_saldo", type="integer", example=10),
      *             @OA\Property(property="valoracion", type="integer", example=0),
-     *             @OA\Property(property="rol_id", type="integer", example=2)
+     *             @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3")
      *         )
      *     ),
      *     @OA\Response(
@@ -347,7 +347,7 @@ class UserController extends Controller
                 'descripcion' => 'sometimes|nullable|string',
                 'horas_saldo' => 'sometimes|nullable|integer',
                 'valoracion' => 'sometimes|nullable|numeric',
-                'rol_id' => 'sometimes|integer|exists:roles,id',
+                'rol_id' => 'sometimes|integer|in:2,3', // Solo roles 2 o 3
             ]);
 
             // Actualizar los datos del usuario

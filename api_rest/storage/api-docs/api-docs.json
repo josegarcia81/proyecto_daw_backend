@@ -38,7 +38,8 @@
                                     "apellido",
                                     "email",
                                     "password",
-                                    "rol_id"
+                                    "provincia_id",
+                                    "ciudad_id"
                                 ],
                                 "properties": {
                                     "nombre": {
@@ -64,18 +65,17 @@
                                         "example": "password123"
                                     },
                                     "rol_id": {
+                                        "description": "Siempre se asigna rol 3 (no es necesario enviarlo)",
                                         "type": "integer",
-                                        "example": 1
+                                        "example": 3
                                     },
                                     "provincia_id": {
                                         "type": "integer",
-                                        "example": 1,
-                                        "nullable": true
+                                        "example": 1
                                     },
                                     "ciudad_id": {
                                         "type": "integer",
-                                        "example": 1,
-                                        "nullable": true
+                                        "example": 1
                                     },
                                     "descripcion": {
                                         "type": "string",
@@ -364,6 +364,265 @@
                 ]
             }
         },
+        "/getProvincias": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las provincias",
+                "operationId": "4820f07f491c31a5f16fc7a2b5f402ff",
+                "responses": {
+                    "200": {
+                        "description": "Provincias obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Provincias obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Madrid"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocurrió un error al obtener las provincias"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getPoblaciones": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las poblaciones",
+                "operationId": "9b28075253f9e605b2612528df827261",
+                "parameters": [
+                    {
+                        "name": "provincia_id",
+                        "in": "query",
+                        "description": "ID de la provincia para filtrar poblaciones",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Poblaciones obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Poblaciones obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Alcalá de Henares"
+                                                    },
+                                                    "provincia_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocurrió un error al obtener las poblaciones"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getCategorias": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las categorías",
+                "operationId": "f5a39aebf0d57c0760fbffde46253a0c",
+                "responses": {
+                    "200": {
+                        "description": "Categorías obtenidas correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/getRoles": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todos los roles",
+                "operationId": "753ed71c7bafcf3a12ab39d2265c5ed4",
+                "responses": {
+                    "200": {
+                        "description": "Roles obtenidos correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/getServicios": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todos los servicios",
+                "operationId": "2c33f6ba4eed3e5b89b1ce596948e54f",
+                "responses": {
+                    "200": {
+                        "description": "Servicios obtenidos correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/getTransacciones": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las transacciones",
+                "operationId": "13b9407d543947c3bd1ee91708011445",
+                "responses": {
+                    "200": {
+                        "description": "Transacciones obtenidas correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/getValoraciones": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las valoraciones",
+                "operationId": "ac53deb587e79dcdb98bb1e29f8632bd",
+                "responses": {
+                    "200": {
+                        "description": "Valoraciones obtenidas correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
@@ -536,8 +795,9 @@
                                         "example": 0
                                     },
                                     "rol_id": {
+                                        "description": "Solo valores 2 o 3",
                                         "type": "integer",
-                                        "example": 1
+                                        "example": 2
                                     }
                                 },
                                 "type": "object"
@@ -819,6 +1079,7 @@
                                         "example": 0
                                     },
                                     "rol_id": {
+                                        "description": "Solo valores 2 o 3",
                                         "type": "integer",
                                         "example": 2
                                     }
@@ -964,6 +1225,67 @@
         }
     },
     "components": {
+        "responses": {
+            "200": {
+                "description": "Tablas obtenidas correctamente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "code": {
+                                    "type": "integer",
+                                    "example": 200
+                                },
+                                "time": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Tablas obtenidas correctamente"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "usuarios"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "500": {
+                "description": "Error del servidor",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "error"
+                                },
+                                "code": {
+                                    "type": "integer",
+                                    "example": 500
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Ocurrió un error al obtener las tablas"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "sanctum": {
                 "type": "http",
@@ -977,6 +1299,10 @@
         {
             "name": "Autenticación",
             "description": "Autenticación"
+        },
+        {
+            "name": "Common",
+            "description": "Common"
         },
         {
             "name": "Usuarios",

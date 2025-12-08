@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommonController;
 
 /**
  * API Routes
@@ -34,3 +35,32 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 });
+
+// Ruta para obtener la documentación de la API
+Route::get('/api-docs', function () {
+    return view('api-docs');
+});
+
+// Rutas sin autentificacion
+Route::get('/users', [UserController::class, 'getAllUsers']);
+// Ruta para obtener si el usuario esta autenticado / tiene la sesion vigente
+// Se envia su token nada mas para verificar, devuelve el usuario autenticado
+Route::get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Rutas a CommonController
+// Ruta para obtener provincias
+Route::get('getProvincias',[CommonController::class,'getProvincias']);
+// Ruta para obtener poblaciones
+Route::get('getPoblaciones',[CommonController::class,'getPoblaciones']);
+// Ruta para obtener tablas
+Route::get('getTables',[CommonController::class,'getAllTables']);
+// Ruta para obtener categorias
+Route::get('getCategorias',[CommonController::class,'getCategorias']);
+// Ruta para obtener roles
+Route::get('getRoles',[CommonController::class,'getRoles']);
+// Ruta para obtener transacciones
+Route::get('getTransacciones',[CommonController::class,'getTransacciones']);
+// Ruta para obtener valoraciones
+Route::get('getValoraciones',[CommonController::class,'getValoraciones']);

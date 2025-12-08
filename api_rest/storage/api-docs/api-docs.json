@@ -77,6 +77,13 @@
                                         "type": "integer",
                                         "example": 1
                                     },
+                                    "direccion": {
+                                        "description": "Campo de prueba - no se guarda en BD",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Calle Falsa 123",
+                                        "nullable": true
+                                    },
                                     "descripcion": {
                                         "type": "string",
                                         "maxLength": 255,

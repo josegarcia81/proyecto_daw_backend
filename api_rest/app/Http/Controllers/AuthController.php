@@ -102,6 +102,9 @@ class AuthController extends Controller{
             'valoracion' => $request->valoracion ?? 0,
         ]);
 
+        // Cargar relaciones (provincia, ciudad, rol)
+        $user->load(['provincia', 'ciudad', 'rol']);
+
         // Creación del token para el nuevo usuario
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -170,8 +173,10 @@ class AuthController extends Controller{
             ], 401);
         }
 
-        // Búsqueda del usuario
-        $user = User::where('email', $request['email'])->firstOrFail();
+        // Búsqueda del usuario con relaciones
+        $user = User::with(['provincia', 'ciudad', 'rol'])
+                    ->where('email', $request['email'])
+                    ->firstOrFail();
 
         // Creación del token
         $token = $user->createToken('auth_token')->plainTextToken;

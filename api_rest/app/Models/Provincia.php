@@ -7,14 +7,14 @@ use App\Models\Poblacion;
 
 class Provincia extends Model
 {
-    protected $table = 'provincia';
+    protected $table = 'provincias';
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
     
     /**
-     * The attributes that are assignable.
+     * Atributos asignables.
      *
      * @var list<string>
      */

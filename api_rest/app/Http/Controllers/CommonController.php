@@ -12,6 +12,7 @@ use App\Models\Rol;
 use App\Models\Servicio;
 use App\Models\Transaccion;
 use App\Models\Valoracion;
+use App\Models\Mensaje;
 
 class CommonController extends Controller{
 
@@ -115,10 +116,15 @@ class CommonController extends Controller{
      */
     public function getPoblaciones(Request $request){
         try {
+            // Verificar si se solicita filtrar por provincia_id
             if ($request->has('provincia_id')) {
-                $poblaciones = Poblacion::where('provincia_id', $request->provincia_id)->get();
+                // Obtener poblaciones de una provincia específica, incluyendo datos de la provincia
+                $poblaciones = Poblacion::with('provincia')
+                    ->where('provincia_id', $request->provincia_id)
+                    ->get();
             } else {
-                $poblaciones = Poblacion::all();
+                // Obtener todas las poblaciones, incluyendo datos de la provincia
+                $poblaciones = Poblacion::with('provincia')->get();
             }
 
             return response()->json([
@@ -341,6 +347,36 @@ class CommonController extends Controller{
                 'code' => 500,
                 'time' => now()->toIso8601String(),
                 'message' => 'Ocurrió un error al obtener las valoraciones',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/getMensajes",
+     *     summary="Obtener todas los mensajes",
+     *     tags={"Common"},
+     *     @OA\Response(response=200, description="Mensajes obtenidos correctamente"),
+     *     @OA\Response(response=500, description="Error del servidor")
+     * )
+     */
+    public function getMensajes(){
+        try {
+            $mensajes = Mensaje::all();
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'time' => now()->toIso8601String(),
+                'message' => 'Mensajes obtenidos correctamente',
+                'data' => $mensajes
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 500,
+                'time' => now()->toIso8601String(),
+                'message' => 'Ocurrió un error al obtener los mensajes',
                 'error' => $e->getMessage()
             ], 500);
         }

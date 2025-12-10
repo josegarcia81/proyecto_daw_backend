@@ -71,4 +71,28 @@ class User extends Authenticatable
         'ciudad_id' => 'integer',
         'rol_id' => 'integer',
     ];
+
+    /**
+     * Relación con Provincia
+     */
+    public function provincia()
+    {
+        return $this->belongsTo(Provincia::class, 'provincia_id');
+    }
+
+    /**
+     * Relación con Ciudad (Poblacion)
+     */
+    public function ciudad()
+    {
+        return $this->belongsTo(Poblacion::class, 'ciudad_id');
+    }
+
+    /**
+     * Relación con Rol
+     */
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'rol_id');
+    }
 }

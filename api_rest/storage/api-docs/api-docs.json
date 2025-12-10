@@ -630,6 +630,967 @@
                 }
             }
         },
+        "/getMensajes": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas los mensajes",
+                "operationId": "03fc2cfab735d6a412f211ea19448f89",
+                "responses": {
+                    "200": {
+                        "description": "Mensajes obtenidos correctamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/mensajes": {
+            "get": {
+                "tags": [
+                    "Mensajes"
+                ],
+                "summary": "Obtener todos los mensajes",
+                "operationId": "1c3bd7e1d8e74e4f2cb2e58e94fd8cc2",
+                "responses": {
+                    "200": {
+                        "description": "Lista de mensajes obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Todos los mensajes obtenidos correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/mensajes/{usuario_id}": {
+            "get": {
+                "tags": [
+                    "Mensajes"
+                ],
+                "summary": "Obtener mensajes de un usuario (como emisor o receptor)",
+                "operationId": "a039ed4b103d9ee4e952249b187eef6d",
+                "parameters": [
+                    {
+                        "name": "usuario_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensajes del usuario obtenidos correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mensajes del usuario obtenidos correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 406
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/mensaje": {
+            "post": {
+                "tags": [
+                    "Mensajes"
+                ],
+                "summary": "Crear un nuevo mensaje",
+                "operationId": "9b6f2f6aa8e3c03f7404f7ed8a92a861",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "emisor_id",
+                                    "receptor_id",
+                                    "servicio_id",
+                                    "mensaje"
+                                ],
+                                "properties": {
+                                    "emisor_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "receptor_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "servicio_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "mensaje": {
+                                        "type": "string",
+                                        "example": "Hola, estoy interesado en tu servicio"
+                                    },
+                                    "leido": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Mensaje creado correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/mensaje/{mensaje}": {
+            "put": {
+                "tags": [
+                    "Mensajes"
+                ],
+                "summary": "Actualizar un mensaje existente",
+                "operationId": "b5e90240036e758a4d33154aff793b4b",
+                "parameters": [
+                    {
+                        "name": "mensaje",
+                        "in": "path",
+                        "description": "ID del mensaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "emisor_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "receptor_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "servicio_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "mensaje": {
+                                        "type": "string",
+                                        "example": "Mensaje actualizado"
+                                    },
+                                    "leido": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mensaje actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Mensajes"
+                ],
+                "summary": "Eliminar un mensaje",
+                "operationId": "ca8623bf12813959742a2d01802e35e0",
+                "parameters": [
+                    {
+                        "name": "mensaje",
+                        "in": "path",
+                        "description": "ID del mensaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensaje eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/servicios": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener todos los servicios",
+                "operationId": "50ae03f33a22e845432a3317903b291f",
+                "responses": {
+                    "200": {
+                        "description": "Lista de servicios obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Todos los servicios obtenidos correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 19
+                                                    },
+                                                    "usuario_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "categoria_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "tipo": {
+                                                        "type": "string",
+                                                        "example": "oferta"
+                                                    },
+                                                    "titulo": {
+                                                        "type": "string",
+                                                        "example": "Clases de matemáticas"
+                                                    },
+                                                    "descripcion": {
+                                                        "type": "string",
+                                                        "example": "Ofrezco clases particulares de matemáticas"
+                                                    },
+                                                    "provincia": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "ciudad": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "horas_estimadas": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "estado": {
+                                                        "type": "string",
+                                                        "example": "activo"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Crear un nuevo servicio",
+                "operationId": "0bf35b8fa344e5b2563343ba426001f8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "usuario_id",
+                                    "categoria_id",
+                                    "tipo",
+                                    "titulo",
+                                    "descripcion",
+                                    "provincia",
+                                    "ciudad",
+                                    "horas_estimadas"
+                                ],
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "categoria_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tipo": {
+                                        "description": "oferta o demanda",
+                                        "type": "string",
+                                        "example": "oferta"
+                                    },
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Clases de matemáticas"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Ofrezco clases particulares de matemáticas para ESO y Bachillerato"
+                                    },
+                                    "provincia": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "ciudad": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "horas_estimadas": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "estado": {
+                                        "description": "activo, en_proceso, finalizado o cancelado",
+                                        "type": "string",
+                                        "example": "activo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Servicio creado correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/servicios/{id}": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener todos los servicios de un usuario",
+                "operationId": "26a4028cc51b6877cef0e62a06036ee9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Servicios del usuario obtenidos correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Servicios del usuario obtenidos correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 406
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/servicios/{servicio}": {
+            "put": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Actualizar un servicio existente",
+                "operationId": "68913ae3d58c8ebe6549694489a90ba3",
+                "parameters": [
+                    {
+                        "name": "servicio",
+                        "in": "path",
+                        "description": "ID del servicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "categoria_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tipo": {
+                                        "type": "string",
+                                        "example": "oferta"
+                                    },
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Clases de matemáticas avanzadas"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Clases particulares actualizadas"
+                                    },
+                                    "provincia": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "ciudad": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "horas_estimadas": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "estado": {
+                                        "description": "activo, en_proceso, finalizado o cancelado",
+                                        "type": "string",
+                                        "example": "activo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Servicio actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Eliminar un servicio",
+                "operationId": "238bbbf76884494d6b70fb190631e538",
+                "parameters": [
+                    {
+                        "name": "servicio",
+                        "in": "path",
+                        "description": "ID del servicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Servicio eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/transacciones": {
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Obtener todas las transacciones",
+                "operationId": "676ae9490a7cf488e1ae40645c11deea",
+                "responses": {
+                    "200": {
+                        "description": "Lista de transacciones obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Todas las transacciones obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/transacciones/{usuario_id}": {
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Obtener transacciones de un usuario (como solicitante u ofertante)",
+                "operationId": "d0f86bf3c6b6d45ace36f6472bb84077",
+                "parameters": [
+                    {
+                        "name": "usuario_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transacciones del usuario obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transacciones del usuario obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 406
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/transaccion": {
+            "post": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Crear una nueva transacción",
+                "operationId": "a06c77f6f5580c8d9851fc9b42c73bc7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "servicio_id",
+                                    "usuario_solicitante_id",
+                                    "usuario_ofertante_id",
+                                    "horas"
+                                ],
+                                "properties": {
+                                    "servicio_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usuario_solicitante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usuario_ofertante_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "horas": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "estado": {
+                                        "description": "pendiente, confirmado, cancelado",
+                                        "type": "string",
+                                        "example": "pendiente"
+                                    },
+                                    "fecha_confirmacion": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Transacción creada correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/transaccion/{transaccion}": {
+            "put": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Actualizar una transacción existente",
+                "operationId": "79565dafa829b2b7b4643f5990666ffd",
+                "parameters": [
+                    {
+                        "name": "transaccion",
+                        "in": "path",
+                        "description": "ID de la transacción",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "servicio_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usuario_solicitante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usuario_ofertante_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "horas": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "confirmado"
+                                    },
+                                    "fecha_confirmacion": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transacción actualizada correctamente"
+                    },
+                    "404": {
+                        "description": "Transacción no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Eliminar una transacción",
+                "operationId": "51993c807962effc7d37a29a227b5645",
+                "parameters": [
+                    {
+                        "name": "transaccion",
+                        "in": "path",
+                        "description": "ID de la transacción",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transacción eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Transacción no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
@@ -1229,6 +2190,292 @@
                     }
                 ]
             }
+        },
+        "/valoraciones": {
+            "get": {
+                "tags": [
+                    "Valoraciones"
+                ],
+                "summary": "Obtener todas las valoraciones",
+                "operationId": "b22d97583f192652c7b5b7feb1fd0fbb",
+                "responses": {
+                    "200": {
+                        "description": "Lista de valoraciones obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Todas las valoraciones obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/valoraciones/{usuario_id}": {
+            "get": {
+                "tags": [
+                    "Valoraciones"
+                ],
+                "summary": "Obtener valoraciones recibidas por un usuario",
+                "operationId": "0e38d686c69081fc4cb7ccb1fc2ef67f",
+                "parameters": [
+                    {
+                        "name": "usuario_id",
+                        "in": "path",
+                        "description": "ID del usuario valorado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valoraciones del usuario obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Valoraciones del usuario obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 406
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/valoracion": {
+            "post": {
+                "tags": [
+                    "Valoraciones"
+                ],
+                "summary": "Crear una nueva valoración",
+                "operationId": "586f0dcf0e77e694b79de8b2dbfa41c6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "transaccion_id",
+                                    "valorador_id",
+                                    "valorado_id",
+                                    "puntuacion"
+                                ],
+                                "properties": {
+                                    "transaccion_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "valorador_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "valorado_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "puntuacion": {
+                                        "description": "Puntuación del 1 al 5",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "comentario": {
+                                        "type": "string",
+                                        "example": "Excelente servicio, muy recomendado",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Valoración creada correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/valoracion/{valoracion}": {
+            "put": {
+                "tags": [
+                    "Valoraciones"
+                ],
+                "summary": "Actualizar una valoración existente",
+                "operationId": "c16deec7863c59fce8a89374e60f4f8b",
+                "parameters": [
+                    {
+                        "name": "valoracion",
+                        "in": "path",
+                        "description": "ID de la valoración",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "transaccion_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "valorador_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "valorado_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "puntuacion": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "comentario": {
+                                        "type": "string",
+                                        "example": "Buen servicio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Valoración actualizada correctamente"
+                    },
+                    "404": {
+                        "description": "Valoración no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Valoraciones"
+                ],
+                "summary": "Eliminar una valoración",
+                "operationId": "1307a65dfc95e81744b2d6fb54b05b67",
+                "parameters": [
+                    {
+                        "name": "valoracion",
+                        "in": "path",
+                        "description": "ID de la valoración",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valoración eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Valoración no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1312,8 +2559,24 @@
             "description": "Common"
         },
         {
+            "name": "Mensajes",
+            "description": "Mensajes"
+        },
+        {
+            "name": "Servicios",
+            "description": "Servicios"
+        },
+        {
+            "name": "Transacciones",
+            "description": "Transacciones"
+        },
+        {
             "name": "Usuarios",
             "description": "Usuarios"
+        },
+        {
+            "name": "Valoraciones",
+            "description": "Valoraciones"
         }
     ]
 }

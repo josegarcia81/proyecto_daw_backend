@@ -339,6 +339,117 @@
                     "response": []
                 }
             ]
+        },
+        {
+            "name": "Servicios",
+            "item": [
+                {
+                    "name": "Get All Servicios - Obtener Todos",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/servicios",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "servicios"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Servicios by Usuario - Por Usuario",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/servicios/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "servicios",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Servicio - Crear",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"usuario_id\": 1,\n  \"categoria_id\": 1,\n  \"tipo\": \"oferta\",\n  \"titulo\": \"Clases de matemáticas\",\n  \"descripcion\": \"Ofrezco clases particulares de matemáticas para ESO y Bachillerato\",\n  \"provincia\": 3,\n  \"ciudad\": 3,\n  \"horas_estimadas\": 2,\n  \"estado\": \"activo\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/servicio",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "servicio"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Servicio - Actualizar",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"titulo\": \"Clases de matemáticas avanzadas\",\n  \"descripcion\": \"Clases particulares actualizadas\",\n  \"horas_estimadas\": 3,\n  \"estado\": \"activo\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/servicio/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "servicio",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Servicio - Eliminar",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/servicio/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "servicio",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
         }
     ],
     "variable": [

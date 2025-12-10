@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\TransaccionController;
+use App\Http\Controllers\ValoracionController;
+use App\Http\Controllers\MensajeController;
 
 /**
  * API Routes
@@ -14,6 +18,7 @@ use App\Http\Controllers\CommonController;
  * 
  */
 
+///////////////////////////////////////////////////////////////////////////
 // Rutas públicas de autenticación
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -49,6 +54,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 });
 
+////////////////////////////////////////////////////////////////////////
 // Rutas a CommonController
 // Ruta para obtener provincias
 Route::get('getProvincias',[CommonController::class,'getProvincias']);
@@ -64,3 +70,40 @@ Route::get('getRoles',[CommonController::class,'getRoles']);
 Route::get('getTransacciones',[CommonController::class,'getTransacciones']);
 // Ruta para obtener valoraciones
 Route::get('getValoraciones',[CommonController::class,'getValoraciones']);
+// Actualmente en CommonController posteriormente TODO: implementar ServiciosController CRUD
+// Ruta para obtener servicios
+//Route::get('getServicios',[CommonController::class,'getServicios']);
+// Ruta para obtener mensajes
+Route::get('getMensajes',[CommonController::class,'getMensajes']);
+
+////////////////////////////////////////////////////////////////////////////
+// Rutas CRUD de Servicios (sin autenticación)
+Route::get('servicios', [ServicioController::class, 'getAllServicios']);
+Route::get('servicios/{id}', [ServicioController::class, 'getServicios']);
+Route::post('servicio', [ServicioController::class, 'createServicio']);
+Route::put('servicio/{servicio}', [ServicioController::class, 'updateServicio']);
+Route::delete('servicio/{servicio}', [ServicioController::class, 'deleteServicio']);
+
+////////////////////////////////////////////////////////////////////////////
+// Rutas CRUD de Transacciones (sin autenticación)
+Route::get('transacciones', [TransaccionController::class, 'getAllTransacciones']);
+Route::get('transacciones/{usuario_id}', [TransaccionController::class, 'getTransacciones']);
+Route::post('transaccion', [TransaccionController::class, 'createTransaccion']);
+Route::put('transaccion/{transaccion}', [TransaccionController::class, 'updateTransaccion']);
+Route::delete('transaccion/{transaccion}', [TransaccionController::class, 'deleteTransaccion']);
+
+////////////////////////////////////////////////////////////////////////////
+// Rutas CRUD de Valoraciones (sin autenticación)
+Route::get('valoraciones', [ValoracionController::class, 'getAllValoraciones']);
+Route::get('valoraciones/{usuario_id}', [ValoracionController::class, 'getValoraciones']);
+Route::post('valoracion', [ValoracionController::class, 'createValoracion']);
+Route::put('valoracion/{valoracion}', [ValoracionController::class, 'updateValoracion']);
+Route::delete('valoracion/{valoracion}', [ValoracionController::class, 'deleteValoracion']);
+
+////////////////////////////////////////////////////////////////////////////
+// Rutas CRUD de Mensajes (sin autenticación)
+Route::get('mensajes', [MensajeController::class, 'getAllMensajes']);
+Route::get('mensajes/{usuario_id}', [MensajeController::class, 'getMensajes']);
+Route::post('mensaje', [MensajeController::class, 'createMensaje']);
+Route::put('mensaje/{mensaje}', [MensajeController::class, 'updateMensaje']);
+Route::delete('mensaje/{mensaje}', [MensajeController::class, 'deleteMensaje']);

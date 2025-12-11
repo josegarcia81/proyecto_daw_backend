@@ -26,14 +26,14 @@ Route::post('/login', [AuthController::class, 'login']);
 // Rutas protegidas que requieren autenticación
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
     // Rutas de usuario que ahora podrían requerir autenticación
     Route::get('/users', [UserController::class, 'getAllUsers']);
     Route::get('/users/{id}', [UserController::class, 'getUser']);
     Route::post('/users', [UserController::class, 'createUser']);
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
     Route::delete('/users/{user}', [UserController::class, 'deleteUser']);
-    
+
     // Ruta para obtener el usuario esta autenticado / tiene la sesion vigente
     // Se envia su token nada mas para verificar, devuelve el usuario autenticado
     Route::get('/user', function (Request $request) {
@@ -57,24 +57,15 @@ Route::get('/user', function (Request $request) {
 ////////////////////////////////////////////////////////////////////////
 // Rutas a CommonController
 // Ruta para obtener provincias
-Route::get('getProvincias',[CommonController::class,'getProvincias']);
+Route::get('getProvincias', [CommonController::class, 'getProvincias']);
 // Ruta para obtener poblaciones
-Route::get('getPoblaciones',[CommonController::class,'getPoblaciones']);
+Route::get('getPoblaciones', [CommonController::class, 'getPoblaciones']);
 // Ruta para obtener tablas
-Route::get('getTables',[CommonController::class,'getAllTables']);
+Route::get('getTables', [CommonController::class, 'getAllTables']);
 // Ruta para obtener categorias
-Route::get('getCategorias',[CommonController::class,'getCategorias']);
+Route::get('getCategorias', [CommonController::class, 'getCategorias']);
 // Ruta para obtener roles
-Route::get('getRoles',[CommonController::class,'getRoles']);
-// Ruta para obtener transacciones
-Route::get('getTransacciones',[CommonController::class,'getTransacciones']);
-// Ruta para obtener valoraciones
-Route::get('getValoraciones',[CommonController::class,'getValoraciones']);
-// Actualmente en CommonController posteriormente TODO: implementar ServiciosController CRUD
-// Ruta para obtener servicios
-//Route::get('getServicios',[CommonController::class,'getServicios']);
-// Ruta para obtener mensajes
-Route::get('getMensajes',[CommonController::class,'getMensajes']);
+Route::get('getRoles', [CommonController::class, 'getRoles']);
 
 ////////////////////////////////////////////////////////////////////////////
 // Rutas CRUD de Servicios (sin autenticación)

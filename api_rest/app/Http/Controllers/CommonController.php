@@ -14,7 +14,8 @@ use App\Models\Transaccion;
 use App\Models\Valoracion;
 use App\Models\Mensaje;
 
-class CommonController extends Controller{
+class CommonController extends Controller
+{
 
 
     /**
@@ -51,7 +52,8 @@ class CommonController extends Controller{
      *     )
      * )
      */
-    public function getProvincias(){
+    public function getProvincias()
+    {
         try {
             $provincias = Provincia::all();
             return response()->json([
@@ -114,7 +116,8 @@ class CommonController extends Controller{
      *     )
      * )
      */
-    public function getPoblaciones(Request $request){
+    public function getPoblaciones(Request $request)
+    {
         try {
             // Verificar si se solicita filtrar por provincia_id
             if ($request->has('provincia_id')) {
@@ -176,11 +179,12 @@ class CommonController extends Controller{
      *     )
      * )
      */
-    public function getAllTables(){
+    public function getAllTables()
+    {
         try {
             $tables = \DB::select('SHOW TABLES');
             $database = env('DB_DATABASE');
-            $tableNames = array_map(function($table) use ($database) {
+            $tableNames = array_map(function ($table) use ($database) {
                 return $table->{"Tables_in_" . $database};
             }, $tables);
 
@@ -211,7 +215,8 @@ class CommonController extends Controller{
      *     @OA\Response(response=500, description="Error del servidor")
      * )
      */
-    public function getCategorias(){
+    public function getCategorias()
+    {
         try {
             $categorias = Categoria::all();
             return response()->json([
@@ -241,7 +246,8 @@ class CommonController extends Controller{
      *     @OA\Response(response=500, description="Error del servidor")
      * )
      */
-    public function getRoles(){
+    public function getRoles()
+    {
         try {
             $roles = Rol::all();
             return response()->json([
@@ -257,126 +263,6 @@ class CommonController extends Controller{
                 'code' => 500,
                 'time' => now()->toIso8601String(),
                 'message' => 'Ocurrió un error al obtener los roles',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/getServicios",
-     *     summary="Obtener todos los servicios",
-     *     tags={"Common"},
-     *     @OA\Response(response=200, description="Servicios obtenidos correctamente"),
-     *     @OA\Response(response=500, description="Error del servidor")
-     * )
-     */
-    public function getServicios(){
-        try {
-            $servicios = Servicio::all();
-            return response()->json([
-                'status' => 'success',
-                'code' => 200,
-                'time' => now()->toIso8601String(),
-                'message' => 'Servicios obtenidos correctamente',
-                'data' => $servicios
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 500,
-                'time' => now()->toIso8601String(),
-                'message' => 'Ocurrió un error al obtener los servicios',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/getTransacciones",
-     *     summary="Obtener todas las transacciones",
-     *     tags={"Common"},
-     *     @OA\Response(response=200, description="Transacciones obtenidas correctamente"),
-     *     @OA\Response(response=500, description="Error del servidor")
-     * )
-     */
-    public function getTransacciones(){
-        try {
-            $transacciones = Transaccion::all();
-            return response()->json([
-                'status' => 'success',
-                'code' => 200,
-                'time' => now()->toIso8601String(),
-                'message' => 'Transacciones obtenidas correctamente',
-                'data' => $transacciones
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 500,
-                'time' => now()->toIso8601String(),
-                'message' => 'Ocurrió un error al obtener las transacciones',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/getValoraciones",
-     *     summary="Obtener todas las valoraciones",
-     *     tags={"Common"},
-     *     @OA\Response(response=200, description="Valoraciones obtenidas correctamente"),
-     *     @OA\Response(response=500, description="Error del servidor")
-     * )
-     */
-    public function getValoraciones(){
-        try {
-            $valoraciones = Valoracion::all();
-            return response()->json([
-                'status' => 'success',
-                'code' => 200,
-                'time' => now()->toIso8601String(),
-                'message' => 'Valoraciones obtenidas correctamente',
-                'data' => $valoraciones
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 500,
-                'time' => now()->toIso8601String(),
-                'message' => 'Ocurrió un error al obtener las valoraciones',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/getMensajes",
-     *     summary="Obtener todas los mensajes",
-     *     tags={"Common"},
-     *     @OA\Response(response=200, description="Mensajes obtenidos correctamente"),
-     *     @OA\Response(response=500, description="Error del servidor")
-     * )
-     */
-    public function getMensajes(){
-        try {
-            $mensajes = Mensaje::all();
-            return response()->json([
-                'status' => 'success',
-                'code' => 200,
-                'time' => now()->toIso8601String(),
-                'message' => 'Mensajes obtenidos correctamente',
-                'data' => $mensajes
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 500,
-                'time' => now()->toIso8601String(),
-                'message' => 'Ocurrió un error al obtener los mensajes',
                 'error' => $e->getMessage()
             ], 500);
         }

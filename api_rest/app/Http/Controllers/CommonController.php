@@ -23,6 +23,7 @@ class CommonController extends Controller
      *     path="/getProvincias",
      *     summary="Obtener todas las provincias",
      *     tags={"Common"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Provincias obtenidas correctamente",
@@ -79,6 +80,7 @@ class CommonController extends Controller
      *     path="/getPoblaciones",
      *     summary="Obtener todas las poblaciones",
      *     tags={"Common"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="provincia_id",
      *         in="query",
@@ -149,10 +151,11 @@ class CommonController extends Controller
     }
     // @OA\  // Comentado para que no aparezca en la documentacion publica / Esto va delante del @Get
     /**
-     * @Get(
+     * @OA\Get(
      *     path="/getTables",
      *     summary="Obtener todas las tablas de la base de datos",
      *     tags={"Common"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Tablas obtenidas correctamente",
@@ -211,6 +214,7 @@ class CommonController extends Controller
      *     path="/getCategorias",
      *     summary="Obtener todas las categorías",
      *     tags={"Common"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="Categorías obtenidas correctamente"),
      *     @OA\Response(response=500, description="Error del servidor")
      * )
@@ -242,6 +246,7 @@ class CommonController extends Controller
      *     path="/getRoles",
      *     summary="Obtener todos los roles",
      *     tags={"Common"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="Roles obtenidos correctamente"),
      *     @OA\Response(response=500, description="Error del servidor")
      * )

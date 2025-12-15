@@ -15,6 +15,7 @@ class ValoracionController extends Controller
      *     path="/valoraciones",
      *     summary="Obtener todas las valoraciones",
      *     tags={"Valoraciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de valoraciones obtenida correctamente",
@@ -61,6 +62,7 @@ class ValoracionController extends Controller
      *     path="/valoraciones/{usuario_id}",
      *     summary="Obtener valoraciones recibidas por un usuario",
      *     tags={"Valoraciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="usuario_id",
      *         in="path",
@@ -134,6 +136,7 @@ class ValoracionController extends Controller
      *     path="/valoracion",
      *     summary="Crear una nueva valoración",
      *     tags={"Valoraciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -204,6 +207,7 @@ class ValoracionController extends Controller
      *     path="/valoracion/{valoracion}",
      *     summary="Actualizar una valoración existente",
      *     tags={"Valoraciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="valoracion",
      *         in="path",
@@ -275,6 +279,7 @@ class ValoracionController extends Controller
      *     path="/valoracion/{valoracion}",
      *     summary="Eliminar una valoración",
      *     tags={"Valoraciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="valoracion",
      *         in="path",

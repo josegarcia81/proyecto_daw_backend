@@ -15,6 +15,7 @@ class TransaccionController extends Controller
      *     path="/transacciones",
      *     summary="Obtener todas las transacciones",
      *     tags={"Transacciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de transacciones obtenida correctamente",
@@ -61,6 +62,7 @@ class TransaccionController extends Controller
      *     path="/transacciones/{usuario_id}",
      *     summary="Obtener transacciones de un usuario (como solicitante u ofertante)",
      *     tags={"Transacciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="usuario_id",
      *         in="path",
@@ -135,6 +137,7 @@ class TransaccionController extends Controller
      *     path="/transaccion",
      *     summary="Crear una nueva transacción",
      *     tags={"Transacciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -208,6 +211,7 @@ class TransaccionController extends Controller
      *     path="/transaccion/{transaccion}",
      *     summary="Actualizar una transacción existente",
      *     tags={"Transacciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="transaccion",
      *         in="path",
@@ -281,6 +285,7 @@ class TransaccionController extends Controller
      *     path="/transaccion/{transaccion}",
      *     summary="Eliminar una transacción",
      *     tags={"Transacciones"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="transaccion",
      *         in="path",

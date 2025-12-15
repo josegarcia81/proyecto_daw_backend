@@ -16,6 +16,7 @@ class MensajeController extends Controller
      *     path="/mensajes",
      *     summary="Obtener todos los mensajes",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de mensajes obtenida correctamente",
@@ -62,6 +63,7 @@ class MensajeController extends Controller
      *     path="/mensajes/{usuario_id}",
      *     summary="Obtener mensajes de un usuario (como emisor o receptor)",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="usuario_id",
      *         in="path",
@@ -136,6 +138,7 @@ class MensajeController extends Controller
      *     path="/mensajes/{mensaje_id}",
      *     summary="Obtener mensaje por ID",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="mensaje_id",
      *         in="path",
@@ -211,6 +214,7 @@ class MensajeController extends Controller
      *     path="/mensaje",
      *     summary="Crear un nuevo mensaje",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -281,6 +285,7 @@ class MensajeController extends Controller
      *     path="/mensaje/{mensaje}",
      *     summary="Actualizar un mensaje existente",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="mensaje",
      *         in="path",
@@ -352,6 +357,7 @@ class MensajeController extends Controller
      *     path="/mensaje/{mensaje}",
      *     summary="Eliminar un mensaje",
      *     tags={"Mensajes"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="mensaje",
      *         in="path",

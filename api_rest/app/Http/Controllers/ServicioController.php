@@ -15,6 +15,7 @@ class ServicioController extends Controller
      *     path="/servicios",
      *     summary="Obtener todos los servicios",
      *     tags={"Servicios"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de servicios obtenida correctamente",
@@ -72,6 +73,7 @@ class ServicioController extends Controller
      *     path="/servicios/{id}",
      *     summary="Obtener todos los servicios de un usuario",
      *     tags={"Servicios"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -146,6 +148,7 @@ class ServicioController extends Controller
      *     path="/servicios",
      *     summary="Crear un nuevo servicio",
      *     tags={"Servicios"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -228,6 +231,7 @@ class ServicioController extends Controller
      *     path="/servicios/{servicio}",
      *     summary="Actualizar un servicio existente",
      *     tags={"Servicios"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="servicio",
      *         in="path",
@@ -335,6 +339,7 @@ class ServicioController extends Controller
      *     path="/servicios/{servicio}",
      *     summary="Eliminar un servicio",
      *     tags={"Servicios"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="servicio",
      *         in="path",

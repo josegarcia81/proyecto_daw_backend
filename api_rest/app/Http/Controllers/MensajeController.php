@@ -132,6 +132,81 @@ class MensajeController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/mensajes/{mensaje_id}",
+     *     summary="Obtener mensaje por ID",
+     *     tags={"Mensajes"},
+     *     @OA\Parameter(
+     *         name="mensaje_id",
+     *         in="path",
+     *         description="ID del mensaje",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mensaje obtenido correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(property="time", type="string", format="date-time"),
+     *             @OA\Property(property="message", type="string", example="Mensaje obtenido correctamente"),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Mensaje no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="code", type="integer", example=406),
+     *             @OA\Property(property="message", type="string", example="Mensaje no encontrado")
+     *         )
+     *     ),
+     *     @OA\Response(response=500, description="Error del servidor")
+     * )
+     */
+    public function getMensaje($mensaje_id){
+        try{
+            // Verificar que el usuario existe
+            $usuario = Mensaje::find($mensaje_id);
+            
+            if (!$usuario) {
+                return response()->json([
+                    "status" => "error",
+                    "code" => 406,
+                    "time" => now()->toIso8601String(),
+                    "message" => "Mensaje no encontrado",
+                    "data" => null
+                ], 404);
+            }
+            
+            // // Obtener mensajes donde el usuario es emisor o receptor
+            // $mensajes = Mensaje::with(['emisor', 'receptor', 'servicio'])
+            //     ->where('emisor_id', $usuario_id)
+            //     ->orWhere('receptor_id', $usuario_id)
+            //     ->get();
+            
+            return response()->json([
+                "status" => "success",
+                "code" => 200,
+                "time" => now()->toIso8601String(),
+                "message" => "Mensajes del usuario obtenidos correctamente",
+                "data" => $mensajes
+            ], 200);
+
+        }catch(\Exception $e){
+            return response()->json([
+                "status" => "error",
+                "code" => 500,
+                "time" => now()->toIso8601String(),
+                "message" => "Ocurrió un error con la base de datos",
+                "error" => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * @OA\Post(
      *     path="/mensaje",
      *     summary="Crear un nuevo mensaje",

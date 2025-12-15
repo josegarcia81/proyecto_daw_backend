@@ -39,15 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    
-    
-    // Rutas sin autentificacion
-    Route::get('/users', [UserController::class, 'getAllUsers']);
-    // Ruta para obtener si el usuario esta autenticado / tiene la sesion vigente
-    // Se envia su token nada mas para verificar, devuelve el usuario autenticado
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
 
     ////////////////////////////////////////////////////////////////////////
     // Rutas a CommonController
@@ -63,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('getRoles', [CommonController::class, 'getRoles']);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Rutas CRUD de Servicios (sin autenticación)
+    // Rutas CRUD de Servicios 
     Route::get('servicios', [ServicioController::class, 'getAllServicios']);
     Route::get('servicios/{id}', [ServicioController::class, 'getServicios']);
     Route::post('servicio', [ServicioController::class, 'createServicio']);
@@ -71,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('servicio/{servicio}', [ServicioController::class, 'deleteServicio']);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Rutas CRUD de Transacciones (sin autenticación)
+    // Rutas CRUD de Transacciones 
     Route::get('transacciones', [TransaccionController::class, 'getAllTransacciones']);
     Route::get('transacciones/{usuario_id}', [TransaccionController::class, 'getTransacciones']);
     Route::post('transaccion', [TransaccionController::class, 'createTransaccion']);
@@ -79,7 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('transaccion/{transaccion}', [TransaccionController::class, 'deleteTransaccion']);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Rutas CRUD de Valoraciones (sin autenticación)
+    // Rutas CRUD de Valoraciones 
     Route::get('valoraciones', [ValoracionController::class, 'getAllValoraciones']);
     Route::get('valoraciones/{usuario_id}', [ValoracionController::class, 'getValoraciones']);
     Route::post('valoracion', [ValoracionController::class, 'createValoracion']);
@@ -87,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('valoracion/{valoracion}', [ValoracionController::class, 'deleteValoracion']);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Rutas CRUD de Mensajes (sin autenticación)
+    // Rutas CRUD de Mensajes 
     Route::get('mensajes', [MensajeController::class, 'getAllMensajes']);
     Route::get('mensajes/{usuario_id}', [MensajeController::class, 'getMensajes']);
     Route::get('mensaje/{mensaje_id}', [MensajeController::class, 'getMensaje']);

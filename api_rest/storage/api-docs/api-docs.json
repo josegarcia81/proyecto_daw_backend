@@ -447,7 +447,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/getPoblaciones": {
@@ -542,7 +547,87 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/getTables": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Obtener todas las tablas de la base de datos",
+                "operationId": "985f9ddfc4cb41fb36de05937985ef99",
+                "responses": {
+                    "200": {
+                        "description": "Tablas obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tablas obtenidas correctamente"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "usuarios"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocurrió un error al obtener las tablas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/getCategorias": {
@@ -559,7 +644,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/getRoles": {
@@ -576,7 +666,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/mensajes": {
@@ -624,7 +719,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/mensajes/{usuario_id}": {
@@ -707,7 +807,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/mensajes/{mensaje_id}": {
@@ -790,7 +895,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/mensaje": {
@@ -848,7 +958,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/mensaje/{mensaje}": {
@@ -914,7 +1029,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -943,7 +1063,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/servicios": {
@@ -1033,7 +1158,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -1111,7 +1241,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/servicios/{id}": {
@@ -1197,7 +1332,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/servicios/{servicio}": {
@@ -1280,7 +1420,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1309,7 +1454,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/transacciones": {
@@ -1357,7 +1507,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/transacciones/{usuario_id}": {
@@ -1440,7 +1595,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/transaccion": {
@@ -1504,7 +1664,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/transaccion/{transaccion}": {
@@ -1574,7 +1739,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1603,7 +1773,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users": {
@@ -2251,7 +2426,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/valoraciones/{usuario_id}": {
@@ -2334,7 +2514,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/valoracion": {
@@ -2394,7 +2579,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/valoracion/{valoracion}": {
@@ -2460,7 +2650,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -2489,72 +2684,16 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
     "components": {
-        "responses": {
-            "200": {
-                "description": "Tablas obtenidas correctamente",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "status": {
-                                    "type": "string",
-                                    "example": "success"
-                                },
-                                "code": {
-                                    "type": "integer",
-                                    "example": 200
-                                },
-                                "time": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                },
-                                "message": {
-                                    "type": "string",
-                                    "example": "Tablas obtenidas correctamente"
-                                },
-                                "data": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "example": "usuarios"
-                                    }
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            },
-            "500": {
-                "description": "Error del servidor",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "status": {
-                                    "type": "string",
-                                    "example": "error"
-                                },
-                                "code": {
-                                    "type": "integer",
-                                    "example": 500
-                                },
-                                "message": {
-                                    "type": "string",
-                                    "example": "Ocurrió un error al obtener las tablas"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            }
-        },
         "securitySchemes": {
             "sanctum": {
                 "type": "http",

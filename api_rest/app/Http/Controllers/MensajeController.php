@@ -172,9 +172,9 @@ class MensajeController extends Controller
     public function getMensaje($mensaje_id){
         try{
             // Verificar que el usuario existe
-            $usuario = Mensaje::find($mensaje_id);
+            $mensaje = Mensaje::find($mensaje_id);
             
-            if (!$usuario) {
+            if (!$mensaje) {
                 return response()->json([
                     "status" => "error",
                     "code" => 406,
@@ -194,8 +194,8 @@ class MensajeController extends Controller
                 "status" => "success",
                 "code" => 200,
                 "time" => now()->toIso8601String(),
-                "message" => "Mensajes del usuario obtenidos correctamente",
-                "data" => $mensajes
+                "message" => "Mensaje obtenido correctamente",
+                "data" => $mensaje
             ], 200);
 
         }catch(\Exception $e){

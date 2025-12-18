@@ -555,81 +555,6 @@
                 ]
             }
         },
-        "/getTables": {
-            "get": {
-                "tags": [
-                    "Common"
-                ],
-                "summary": "Obtener todas las tablas de la base de datos",
-                "operationId": "985f9ddfc4cb41fb36de05937985ef99",
-                "responses": {
-                    "200": {
-                        "description": "Tablas obtenidas correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "code": {
-                                            "type": "integer",
-                                            "example": 200
-                                        },
-                                        "time": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Tablas obtenidas correctamente"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string",
-                                                "example": "usuarios"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "code": {
-                                            "type": "integer",
-                                            "example": 500
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ocurrió un error al obtener las tablas"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
         "/getCategorias": {
             "get": {
                 "tags": [
@@ -672,24 +597,6 @@
                         "sanctum": []
                     }
                 ]
-            }
-        },
-        "/developer/db-dump": {
-            "get": {
-                "tags": [
-                    "Common"
-                ],
-                "summary": "Volcado completo de la BBDD (SOLO DESARROLLO)",
-                "description": "Devuelve tablas, columnas y datos. SOLO DISPONIBLE EN LOCAL/DEBUG. Retorna 403 en producción.",
-                "operationId": "d86cf44599190baabd4b8fcd8698cc32",
-                "responses": {
-                    "200": {
-                        "description": "Volcado exitoso"
-                    },
-                    "403": {
-                        "description": "Prohibido en producción"
-                    }
-                }
             }
         },
         "/mensajes": {

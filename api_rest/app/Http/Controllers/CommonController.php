@@ -150,65 +150,7 @@ class CommonController extends Controller
             ], 500);
         }
     }
-    // @OA\  // Comentado para que no aparezca en la documentacion publica / Esto va delante del @Get
-    /**
-     *     Get(
-     *     path="/getTables",
-     *     summary="Obtener todas las tablas de la base de datos",
-     *     tags={"Common"},
-     *     security={{"sanctum":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Tablas obtenidas correctamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="code", type="integer", example=200),
-     *             @OA\Property(property="time", type="string", format="date-time"),
-     *             @OA\Property(property="message", type="string", example="Tablas obtenidas correctamente"),
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="array",
-     *                 @OA\Items(type="string", example="usuarios")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Error del servidor",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="error"),
-     *             @OA\Property(property="code", type="integer", example=500),
-     *             @OA\Property(property="message", type="string", example="Ocurrió un error al obtener las tablas")
-     *         )
-     *     )
-     * )
-     */
-    public function getAllTables(){
-        try {
-            $tables = DB::select('SHOW TABLES');
-            $database = env('DB_DATABASE');
-            $tableNames = array_map(function ($table) use ($database) {
-                return $table->{"Tables_in_" . $database};
-            }, $tables);
-
-            return response()->json([
-                'status' => 'success',
-                'code' => 200,
-                'time' => now()->toIso8601String(),
-                'message' => 'Tablas obtenidas correctamente',
-                'data' => $tableNames
-            ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 500,
-                'time' => now()->toIso8601String(),
-                'message' => 'Ocurrió un error al obtener las tablas',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
+    
     /**
      * @OA\Get(
      *     path="/getCategorias",
@@ -270,17 +212,36 @@ class CommonController extends Controller
             ], 500);
         }
     }
-    // @OA\Get( // Comentado para que no aparezca en la documentacion publica / Esto va delante del @Get
-    /**
-     * 
-     *     path="/developer/db-dump",
-     *     summary="Volcado completo de la BBDD (SOLO DESARROLLO)",
-     *     description="Devuelve tablas, columnas y datos. SOLO DISPONIBLE EN LOCAL/DEBUG. Retorna 403 en producción.",
-     *     tags={"Common"},
-     *     @OA\Response(response=200, description="Volcado exitoso"),
-     *     @OA\Response(response=403, description="Prohibido en producción")
-     * )
-     */
+
+    // Solo developer
+    public function getAllTables(){
+        try {
+            $tables = DB::select('SHOW TABLES');
+            $database = env('DB_DATABASE');
+            $tableNames = array_map(function ($table) use ($database) {
+                return $table->{"Tables_in_" . $database};
+            }, $tables);
+
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'time' => now()->toIso8601String(),
+                'message' => 'Tablas obtenidas correctamente',
+                'data' => $tableNames
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 500,
+                'time' => now()->toIso8601String(),
+                'message' => 'Ocurrió un error al obtener las tablas',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    // Solo Developer
     public function getFullDatabaseDump(){
         // 1. CONTROL DE SEGURIDAD
         // Solo permitir si estamos en local O si el debug está activado

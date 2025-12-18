@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Servicio extends Model
 {
+        /**
+     * The primary key type and auto-incrementing.
+     */
+    protected $primaryKey = 'id'; // Definir nombre de la clave primaria
+    public $incrementing = true; // Definir que la clave primaria es autoincrementable
+    protected $keyType = 'int'; // Definir que la clave primaria es de tipo entero
     protected $table = 'servicios';
     public $timestamps = false;
     

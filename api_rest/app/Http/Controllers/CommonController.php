@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Exception;
 
 use App\Models\Provincia;
 use App\Models\Poblacion;
@@ -53,8 +56,7 @@ class CommonController extends Controller
      *     )
      * )
      */
-    public function getProvincias()
-    {
+    public function getProvincias(){
         try {
             $provincias = Provincia::all();
             return response()->json([
@@ -64,7 +66,7 @@ class CommonController extends Controller
                 'message' => 'Provincias obtenidas correctamente',
                 'data' => $provincias
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -118,8 +120,7 @@ class CommonController extends Controller
      *     )
      * )
      */
-    public function getPoblaciones(Request $request)
-    {
+    public function getPoblaciones(Request $request){
         try {
             // Verificar si se solicita filtrar por provincia_id
             if ($request->has('provincia_id')) {
@@ -139,7 +140,7 @@ class CommonController extends Controller
                 'message' => 'Poblaciones obtenidas correctamente',
                 'data' => $poblaciones
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -151,7 +152,7 @@ class CommonController extends Controller
     }
     // @OA\  // Comentado para que no aparezca en la documentacion publica / Esto va delante del @Get
     /**
-     * @OA\Get(
+     *     Get(
      *     path="/getTables",
      *     summary="Obtener todas las tablas de la base de datos",
      *     tags={"Common"},
@@ -182,10 +183,9 @@ class CommonController extends Controller
      *     )
      * )
      */
-    public function getAllTables()
-    {
+    public function getAllTables(){
         try {
-            $tables = \DB::select('SHOW TABLES');
+            $tables = DB::select('SHOW TABLES');
             $database = env('DB_DATABASE');
             $tableNames = array_map(function ($table) use ($database) {
                 return $table->{"Tables_in_" . $database};
@@ -198,7 +198,7 @@ class CommonController extends Controller
                 'message' => 'Tablas obtenidas correctamente',
                 'data' => $tableNames
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -219,8 +219,7 @@ class CommonController extends Controller
      *     @OA\Response(response=500, description="Error del servidor")
      * )
      */
-    public function getCategorias()
-    {
+    public function getCategorias(){
         try {
             $categorias = Categoria::all();
             return response()->json([
@@ -230,7 +229,7 @@ class CommonController extends Controller
                 'message' => 'Categorías obtenidas correctamente',
                 'data' => $categorias
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -251,8 +250,7 @@ class CommonController extends Controller
      *     @OA\Response(response=500, description="Error del servidor")
      * )
      */
-    public function getRoles()
-    {
+    public function getRoles(){
         try {
             $roles = Rol::all();
             return response()->json([
@@ -262,12 +260,72 @@ class CommonController extends Controller
                 'message' => 'Roles obtenidos correctamente',
                 'data' => $roles
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
                 'time' => now()->toIso8601String(),
                 'message' => 'Ocurrió un error al obtener los roles',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    // @OA\Get( // Comentado para que no aparezca en la documentacion publica / Esto va delante del @Get
+    /**
+     * 
+     *     path="/developer/db-dump",
+     *     summary="Volcado completo de la BBDD (SOLO DESARROLLO)",
+     *     description="Devuelve tablas, columnas y datos. SOLO DISPONIBLE EN LOCAL/DEBUG. Retorna 403 en producción.",
+     *     tags={"Common"},
+     *     @OA\Response(response=200, description="Volcado exitoso"),
+     *     @OA\Response(response=403, description="Prohibido en producción")
+     * )
+     */
+    public function getFullDatabaseDump(){
+        // 1. CONTROL DE SEGURIDAD
+        // Solo permitir si estamos en local O si el debug está activado
+        if (!app()->environment('local') && !config('app.debug')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Este endpoint está deshabilitado en producción.'
+            ], 403);
+        }
+
+        try {
+            $databaseName = env('DB_DATABASE');
+            // Obtener listado de tablas
+            $tablesObj = DB::select('SHOW TABLES'); 
+            $tables = array_map(function ($t) use ($databaseName) {
+                return $t->{"Tables_in_" . $databaseName};
+            }, $tablesObj);
+
+            $dump = [];
+
+            foreach ($tables as $table) {
+                // 2. Obtener Columnas
+                $columns = Schema::getColumnListing($table);
+
+                // 3. Obtener Datos (Limite 50 por seguridad de memoria)
+                $rows = DB::table($table)->limit(50)->get();
+
+                $dump[$table] = [
+                    'attributes' => $columns,
+                    'count' => DB::table($table)->count(), // Total real de filas
+                    'data' => $rows
+                ];
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'time' => now()->toIso8601String(),
+                'environment' => app()->environment(),
+                'database_content' => $dump
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al inspeccionar la base de datos',
                 'error' => $e->getMessage()
             ], 500);
         }

@@ -23,6 +23,11 @@ use App\Http\Controllers\MensajeController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// Ruta developer para inspeccionar BBDD (SOLO ENTORNO LOCAL)
+// Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
+// Ruta developer para obtener tablas
+// Route::get('getTables', [CommonController::class, 'getAllTables']);
+
 // Rutas protegidas que requieren autenticación
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -33,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'createUser']);
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
     Route::delete('/users/{user}', [UserController::class, 'deleteUser']);
+    Route::post('/users/{user}/change-password', [UserController::class, 'changePassword']);
 
     // Ruta para obtener el usuario esta autenticado / tiene la sesion vigente
     // Se envia su token nada mas para verificar, devuelve el usuario autenticado
@@ -46,8 +52,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('getProvincias', [CommonController::class, 'getProvincias']);
     // Ruta para obtener poblaciones
     Route::get('getPoblaciones', [CommonController::class, 'getPoblaciones']);
-    // Ruta para obtener tablas
-    Route::get('getTables', [CommonController::class, 'getAllTables']);
     // Ruta para obtener categorias
     Route::get('getCategorias', [CommonController::class, 'getCategorias']);
     // Ruta para obtener roles
@@ -56,7 +60,8 @@ Route::middleware('auth:sanctum')->group(function () {
     ////////////////////////////////////////////////////////////////////////////
     // Rutas CRUD de Servicios 
     Route::get('servicios', [ServicioController::class, 'getAllServicios']);
-    Route::get('servicios/{id}', [ServicioController::class, 'getServicios']);
+    Route::get('servicios/{user_id}', [ServicioController::class, 'getServicios']);
+    Route::get('servicio/{id}', [ServicioController::class, 'getServicio']);
     Route::post('servicio', [ServicioController::class, 'createServicio']);
     Route::put('servicio/{servicio}', [ServicioController::class, 'updateServicio']);
     Route::delete('servicio/{servicio}', [ServicioController::class, 'deleteServicio']);

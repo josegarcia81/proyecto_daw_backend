@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class UserController extends Controller
 {
@@ -56,15 +58,15 @@ class UserController extends Controller
     public function getAllUsers(){
         try{
             $users = User::select('id', 
-                                    'nombre', 
-                                    'apellido', 
-                                    'email', 
-                                    'provincia_id', 
-                                    'ciudad_id', 
-                                    'descripcion', 
-                                    'horas_saldo', 
-                                    'valoracion', 
-                                    'rol_id')->get();
+                                'nombre', 
+                                'apellido', 
+                                'email', 
+                                'provincia_id', 
+                                'ciudad_id', 
+                                'descripcion', 
+                                'horas_saldo', 
+                                'valoracion', 
+                                'rol_id')->get();
 
             return response()->json([
                 'status' => 'success',
@@ -73,7 +75,7 @@ class UserController extends Controller
                 "message" => "Todos los usuarios obtenidos correctamente",
                 'data' => $users
             ], 200);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -155,7 +157,7 @@ class UserController extends Controller
                     "data" => null
                 ], 404);
             }
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 "status" => "error",
                 "code" => 500,
@@ -267,7 +269,7 @@ class UserController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -400,7 +402,7 @@ class UserController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -464,12 +466,72 @@ class UserController extends Controller
                 'data' => null
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
                 'time' => now()->toIso8601String(),
                 'message' => 'Ocurrió un error al eliminar el usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/users/{user}/change-password",
+     *     summary="Cambiar contraseña del usuario",
+     *     tags={"Usuarios"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password"},
+     *             @OA\Property(property="password", type="string", format="password", example="nueva_contraseña123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Contraseña actualizada"),
+     *     @OA\Response(response=400, description="La contraseña es la misma"),
+     *     @OA\Response(response=500, description="Error del servidor")
+     * )
+     */
+    public function changePassword(Request $request, User $user)
+    {
+        try {
+            $validated = $request->validate([
+                'password' => 'required|string|min:6', // Validamos la entrada
+            ]);
+
+            $nuevaPassword = $validated['password'];
+
+            // Comprobar usando la contraseña PLANA contra el HASH guardado
+            if (Hash::check($nuevaPassword, $user->password)) {
+                return response()->json([
+                    'status' => 'error',
+                    'code' => 400,
+                    'time' => now()->toIso8601String(),
+                    'message' => 'La nueva contraseña no puede ser igual a la actual'
+                ], 400);
+            }
+
+            // Si es diferente, la encriptamos y guardamos
+            $user->password = bcrypt($nuevaPassword);
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'time' => now()->toIso8601String(),
+                'message' => 'Contraseña cambiada correctamente',
+                'data' => $user
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 500,
+                'time' => now()->toIso8601String(),
+                'message' => 'Ocurrió un error al cambiar la contraseña',
                 'error' => $e->getMessage()
             ], 500);
         }

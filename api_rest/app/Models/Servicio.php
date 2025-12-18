@@ -15,8 +15,8 @@ class Servicio extends Model
         'tipo',
         'titulo',
         'descripcion',
-        'provincia',
-        'ciudad',
+        'provincia_id',
+        'ciudad_id',
         'horas_estimadas',
         'estado',
     ];
@@ -24,8 +24,8 @@ class Servicio extends Model
     protected $casts = [
         'usuario_id' => 'integer',
         'categoria_id' => 'integer',
-        'provincia' => 'integer',
-        'ciudad' => 'integer',
+        'provincia_id' => 'integer',
+        'ciudad_id' => 'integer',
         'horas_estimadas' => 'integer',
     ];
     
@@ -57,7 +57,7 @@ class Servicio extends Model
      */
     public function provinciaRelacion()
     {
-        return $this->belongsTo(Provincia::class, 'provincia');
+        return $this->belongsTo(Provincia::class, 'provincia_id');
     }
 
     /**
@@ -66,6 +66,6 @@ class Servicio extends Model
      */
     public function ciudadRelacion()
     {
-        return $this->belongsTo(Poblacion::class, 'ciudad');
+        return $this->belongsTo(Poblacion::class, 'ciudad_id');
     }
 }

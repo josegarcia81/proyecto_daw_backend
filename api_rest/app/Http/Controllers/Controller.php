@@ -6,7 +6,16 @@ namespace App\Http\Controllers;
  * @OA\Info(
  *     title="Proyecto DAW Backend API",
  *     version="1.0.0",
- *     description="Documentación de la API REST del Proyecto DAW",
+ *     description="API REST del Proyecto DAW. Esta API gestiona la lógica de negocio para la plataforma de intercambio de tiempo.
+ *     
+ *     Módulos incluidos:
+ *     - **Autenticación**: Registro, login, logout y gestión de perfil.
+ *     - **Usuarios**: Gestión completa de usuarios (CRUD).
+ *     - **Servicios**: Gestión de ofertas y demandas de servicios.
+ *     - **Transacciones**: Control de intercambios de tiempo entre usuarios.
+ *     - **Valoraciones**: Sistema de reputación y feedback.
+ *     - **Mensajes**: Sistema de mensajería interna.
+ *     - **Common**: Recursos compartidos (provincias, poblaciones, etc.).",
  *     @OA\Contact(
  *         email="soporte@proyectodaw.com"
  *     )
@@ -27,7 +36,7 @@ namespace App\Http\Controllers;
  *     type="http",
  *     scheme="bearer",
  *     bearerFormat="JWT",
- *     description="Autenticación mediante token Laravel Sanctum"
+ *     description="Autenticación mediante token Laravel Sanctum. Ingrese el token directamente."
  * )
  */
 abstract class Controller

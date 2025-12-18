@@ -8,6 +8,7 @@ use App\Models\Servicio;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Exception;
 
 class MensajeController extends Controller
 {
@@ -47,7 +48,7 @@ class MensajeController extends Controller
                 "message" => "Todos los mensajes obtenidos correctamente",
                 'data' => $mensajes
             ], 200);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -122,7 +123,7 @@ class MensajeController extends Controller
                 "message" => "Mensajes del usuario obtenidos correctamente",
                 "data" => $mensajes
             ], 200);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 "status" => "error",
                 "code" => 500,
@@ -198,7 +199,7 @@ class MensajeController extends Controller
                 "data" => $mensaje
             ], 200);
 
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 "status" => "error",
                 "code" => 500,
@@ -269,7 +270,7 @@ class MensajeController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -341,7 +342,7 @@ class MensajeController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -382,7 +383,7 @@ class MensajeController extends Controller
                 'data' => null
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,

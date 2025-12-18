@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Proyecto DAW Backend API",
-        "description": "Documentación de la API REST del Proyecto DAW",
+        "description": "API REST del Proyecto DAW. Esta API gestiona la lógica de negocio para la plataforma de intercambio de tiempo.\n *     \n *     Módulos incluidos:\n *     - **Autenticación**: Registro, login, logout y gestión de perfil.\n *     - **Usuarios**: Gestión completa de usuarios (CRUD).\n *     - **Servicios**: Gestión de ofertas y demandas de servicios.\n *     - **Transacciones**: Control de intercambios de tiempo entre usuarios.\n *     - **Valoraciones**: Sistema de reputación y feedback.\n *     - **Mensajes**: Sistema de mensajería interna.\n *     - **Common**: Recursos compartidos (provincias, poblaciones, etc.).",
         "contact": {
             "email": "soporte@proyectodaw.com"
         },
@@ -674,6 +674,24 @@
                 ]
             }
         },
+        "/developer/db-dump": {
+            "get": {
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Volcado completo de la BBDD (SOLO DESARROLLO)",
+                "description": "Devuelve tablas, columnas y datos. SOLO DISPONIBLE EN LOCAL/DEBUG. Retorna 403 en producción.",
+                "operationId": "d86cf44599190baabd4b8fcd8698cc32",
+                "responses": {
+                    "200": {
+                        "description": "Volcado exitoso"
+                    },
+                    "403": {
+                        "description": "Prohibido en producción"
+                    }
+                }
+            }
+        },
         "/mensajes": {
             "get": {
                 "tags": [
@@ -1182,8 +1200,8 @@
                                     "tipo",
                                     "titulo",
                                     "descripcion",
-                                    "provincia",
-                                    "ciudad",
+                                    "provincia_id",
+                                    "ciudad_id",
                                     "horas_estimadas"
                                 ],
                                 "properties": {
@@ -1208,11 +1226,11 @@
                                         "type": "string",
                                         "example": "Ofrezco clases particulares de matemáticas para ESO y Bachillerato"
                                     },
-                                    "provincia": {
+                                    "provincia_id": {
                                         "type": "integer",
                                         "example": 3
                                     },
-                                    "ciudad": {
+                                    "ciudad_id": {
                                         "type": "integer",
                                         "example": 3
                                     },
@@ -1249,16 +1267,16 @@
                 ]
             }
         },
-        "/servicios/{id}": {
+        "/servicios/{user_id}": {
             "get": {
                 "tags": [
                     "Servicios"
                 ],
                 "summary": "Obtener todos los servicios de un usuario",
-                "operationId": "26a4028cc51b6877cef0e62a06036ee9",
+                "operationId": "4014be8e1d1fea7dc1407ecfc402aa31",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user_id",
                         "in": "path",
                         "description": "ID del usuario",
                         "required": true,
@@ -1340,6 +1358,94 @@
                 ]
             }
         },
+        "/servicios/{service_id}": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener un servicio por su ID",
+                "operationId": "bd387aecc455d08c180412a8e9fabb9f",
+                "parameters": [
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "ID del servicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Servicio obtenido correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Servicio obtenido correctamente"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Servicio no encontrado"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/servicios/{servicio}": {
             "put": {
                 "tags": [
@@ -1384,11 +1490,11 @@
                                         "type": "string",
                                         "example": "Clases particulares actualizadas"
                                     },
-                                    "provincia": {
+                                    "provincia_id": {
                                         "type": "integer",
                                         "example": 3
                                     },
-                                    "ciudad": {
+                                    "ciudad_id": {
                                         "type": "integer",
                                         "example": 3
                                     },
@@ -2381,6 +2487,51 @@
                 ]
             }
         },
+        "/users/{user}/change-password": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Cambiar contraseña del usuario",
+                "operationId": "b86fcb6de14591c8ecbf34d6b3d15b1e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nueva_contraseña123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contraseña actualizada"
+                    },
+                    "400": {
+                        "description": "La contraseña es la misma"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/valoraciones": {
             "get": {
                 "tags": [
@@ -2697,7 +2848,7 @@
         "securitySchemes": {
             "sanctum": {
                 "type": "http",
-                "description": "Autenticación mediante token Laravel Sanctum",
+                "description": "Autenticación mediante token Laravel Sanctum. Ingrese el token directamente.",
                 "bearerFormat": "JWT",
                 "scheme": "bearer"
             }

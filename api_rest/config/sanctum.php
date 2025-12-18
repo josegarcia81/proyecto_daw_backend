@@ -46,8 +46,8 @@ return [
     | "expires_at" attribute, but first-party sessions are not affected.
     |
     */
-
-    'expiration' => null,
+    // Se modifica para que por defecto caduquen a las 24 horas
+    'expiration' => 1440,
 
     /*
     |--------------------------------------------------------------------------

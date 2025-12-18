@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Exception;
 
 class TransaccionController extends Controller
 {
@@ -46,7 +47,7 @@ class TransaccionController extends Controller
                 "message" => "Todas las transacciones obtenidas correctamente",
                 'data' => $transacciones
             ], 200);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -121,7 +122,7 @@ class TransaccionController extends Controller
                 "message" => "Transacciones del usuario obtenidas correctamente",
                 "data" => $transacciones
             ], 200);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json([
                 "status" => "error",
                 "code" => 500,
@@ -195,7 +196,7 @@ class TransaccionController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -269,7 +270,7 @@ class TransaccionController extends Controller
                 'message' => 'Error de validación',
                 'error' => $e->errors()
             ], 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,
@@ -310,7 +311,7 @@ class TransaccionController extends Controller
                 'data' => null
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'code' => 500,

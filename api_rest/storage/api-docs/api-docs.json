@@ -1265,16 +1265,16 @@
                 ]
             }
         },
-        "/servicios/{service_id}": {
+        "/servicio/{servicio_id}": {
             "get": {
                 "tags": [
                     "Servicios"
                 ],
                 "summary": "Obtener un servicio por su ID",
-                "operationId": "bd387aecc455d08c180412a8e9fabb9f",
+                "operationId": "7e709a414379fe887268d5a4471a89e6",
                 "parameters": [
                     {
-                        "name": "service_id",
+                        "name": "servicio_id",
                         "in": "path",
                         "description": "ID del servicio",
                         "required": true,

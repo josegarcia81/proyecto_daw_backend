@@ -146,12 +146,12 @@ class ServicioController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/servicios/{service_id}",
+     *     path="/servicio/{servicio_id}",
      *     summary="Obtener un servicio por su ID",
      *     tags={"Servicios"},
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="service_id",
+     *         name="servicio_id",
      *         in="path",
      *         description="ID del servicio",
      *         required=true,

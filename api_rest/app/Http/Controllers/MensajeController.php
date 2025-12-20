@@ -136,7 +136,7 @@ class MensajeController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/mensajes/{mensaje_id}",
+     *     path="/mensaje/{mensaje_id}",
      *     summary="Obtener mensaje por ID",
      *     tags={"Mensajes"},
      *     security={{"sanctum":{}}},

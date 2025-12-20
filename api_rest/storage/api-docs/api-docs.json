@@ -740,13 +740,13 @@
                 ]
             }
         },
-        "/mensajes/{mensaje_id}": {
+        "/mensaje/{mensaje_id}": {
             "get": {
                 "tags": [
                     "Mensajes"
                 ],
                 "summary": "Obtener mensaje por ID",
-                "operationId": "3ad74695849beec83c4003d02418c116",
+                "operationId": "d9dfb67e117f5cdd90e4b69279498226",
                 "parameters": [
                     {
                         "name": "mensaje_id",

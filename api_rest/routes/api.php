@@ -92,6 +92,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('mensaje/{mensaje}', [MensajeController::class, 'deleteMensaje']);
 });
 
+    Route::get('getProvincias', [CommonController::class, 'getProvincias']);
+    // Ruta para obtener poblaciones
+    Route::get('getPoblaciones', [CommonController::class, 'getPoblaciones']);
+
 // Ruta para obtener la documentación de la API
 Route::get('/api-docs', function () {
     return view('api-docs');

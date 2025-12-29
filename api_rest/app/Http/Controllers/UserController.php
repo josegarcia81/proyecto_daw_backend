@@ -70,7 +70,8 @@ class UserController extends Controller
                                 'valoracion', 
                                 'rol_id',
                                 'ruta_img',
-                                'direccion')->get();
+                                //'direccion'
+                                )->get();
 
             return response()->json([
                 'status' => 'success',

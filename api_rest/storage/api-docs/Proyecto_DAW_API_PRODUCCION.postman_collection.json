@@ -20,8 +20,64 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"Garcia\",\n  \"email\": \"pedro.garcia@example.com\",\n  \"password\": \"password123\",\n  \"rol_id\": 1,\n  \"provincia_id\": 1,\n  \"ciudad_id\": 1,\n  \"descripcion\": \"Usuario de prueba\",\n  \"horas_saldo\": 5,\n  \"valoracion\": 0\n}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "nombre",
+                                    "value": "Pedro",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "apellido",
+                                    "value": "Garcia",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "pedro.garcia@example.com",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "password123",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "rol_id",
+                                    "value": "3",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "provincia_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "ciudad_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "descripcion",
+                                    "value": "Usuario de prueba",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "horas_saldo",
+                                    "value": "5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "valoracion",
+                                    "value": "0",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "img",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
                         },
                         "url": {
                             "raw": "{{base_url}}/register",
@@ -196,8 +252,64 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"Garcia\",\n  \"email\": \"pedro.garcia@example.com\",\n  \"password\": \"secreto123\",\n  \"rol_id\": 1,\n  \"provincia_id\": 1,\n  \"ciudad_id\": 1,\n  \"descripcion\": \"Descripción del usuario\",\n  \"horas_saldo\": 5,\n  \"valoracion\": 0\n}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "nombre",
+                                    "value": "Pedro",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "apellido",
+                                    "value": "Garcia",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "pedro.garcia@example.com",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "secreto123",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "rol_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "provincia_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "ciudad_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "descripcion",
+                                    "value": "Descripción del usuario",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "horas_saldo",
+                                    "value": "5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "valoracion",
+                                    "value": "0",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "img",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
                         },
                         "url": {
                             "raw": "{{base_url}}/users",
@@ -224,16 +336,42 @@
                                 }
                             ]
                         },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
+                        "method": "POST",
+                        "header": [],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"Garcia\",\n  \"email\": \"pedro.garcia@example.com\",\n  \"password\": \"nuevo_secreto123\"\n}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "nombre",
+                                    "value": "Pedro",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "apellido",
+                                    "value": "Garcia",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "pedro.garcia@example.com",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "nuevo_secreto123",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "img",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
                         },
                         "url": {
                             "raw": "{{base_url}}/users/1",
@@ -389,8 +527,59 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"usuario_id\": 1,\n  \"categoria_id\": 1,\n  \"tipo\": \"oferta\",\n  \"titulo\": \"Clases de matemáticas\",\n  \"descripcion\": \"Ofrezco clases particulares de matemáticas para ESO y Bachillerato\",\n  \"provincia\": 3,\n  \"ciudad\": 3,\n  \"horas_estimadas\": 2,\n  \"estado\": \"activo\"\n}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "usuario_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "categoria_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "tipo",
+                                    "value": "oferta",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "titulo",
+                                    "value": "Clases de matemáticas",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "descripcion",
+                                    "value": "Ofrezco clases particulares de matemáticas para ESO y Bachillerato",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "provincia_id",
+                                    "value": "3",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "ciudad_id",
+                                    "value": "3",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "horas_estimadas",
+                                    "value": "2",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "estado",
+                                    "value": "activo",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "img",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
                         },
                         "url": {
                             "raw": "{{base_url}}/servicio",
@@ -407,16 +596,42 @@
                 {
                     "name": "Update Servicio - Actualizar",
                     "request": {
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
+                        "method": "POST",
+                        "header": [],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"titulo\": \"Clases de matemáticas avanzadas\",\n  \"descripcion\": \"Clases particulares actualizadas\",\n  \"horas_estimadas\": 3,\n  \"estado\": \"activo\"\n}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "titulo",
+                                    "value": "Clases de matemáticas avanzadas",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "descripcion",
+                                    "value": "Clases particulares actualizadas",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "horas_estimadas",
+                                    "value": "3",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "estado",
+                                    "value": "activo",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "img",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
                         },
                         "url": {
                             "raw": "{{base_url}}/servicio/1",

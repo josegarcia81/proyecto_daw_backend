@@ -9,15 +9,15 @@ namespace App\Http\Controllers;
  *     description="API REST del Proyecto DAW. Esta API gestiona la lógica de negocio para la plataforma de intercambio de tiempo.
  *     
  *     Módulos incluidos:
- *     - **Autenticación**: Registro, login, logout y gestión de perfil.
- *     - **Usuarios**: Gestión completa de usuarios (CRUD).
- *     - **Servicios**: Gestión de ofertas y demandas de servicios.
- *     - **Transacciones**: Control de intercambios de tiempo entre usuarios.
- *     - **Valoraciones**: Sistema de reputación y feedback.
- *     - **Mensajes**: Sistema de mensajería interna.
- *     - **Common**: Recursos compartidos (provincias, poblaciones, etc.).",
+ *     - Autenticación: Registro, login, logout y gestión de perfil.
+ *     - Usuarios: Gestión completa de usuarios (CRUD).
+ *     - Servicios: Gestión de ofertas y demandas de servicios.
+ *     - Transacciones: Control de intercambios de tiempo entre usuarios.
+ *     - Valoraciones: Sistema de reputación y feedback.
+ *     - Mensajes: Sistema de mensajería interna.
+ *     - Common: Recursos compartidos (provincias, poblaciones, etc.).",
  *     @OA\Contact(
- *         email="soporte@proyectodaw.com"
+ *         email="josegarcia@birt.eus"
  *     )
  * )
  * 

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Cloudinary\Cloudinary;
 
 class AuthController extends Controller{
     /**
@@ -20,19 +21,23 @@ class AuthController extends Controller{
      *     @OA\RequestBody(
      *         required=true,
      *         description="Datos del nuevo usuario",
-     *         @OA\JsonContent(
-     *             required={"nombre","apellido","email","password","provincia_id","ciudad_id"},
-     *             @OA\Property(property="nombre", type="string", maxLength=100, example="Pedro"),
-     *             @OA\Property(property="apellido", type="string", maxLength=100, example="Garcia"),
-     *             @OA\Property(property="email", type="string", format="email", maxLength=150, example="pedro.garcia@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", minLength=6, example="password123"),
-     *             @OA\Property(property="rol_id", type="integer", example=3, description="Siempre se asigna rol 3 (no es necesario enviarlo)"),
-     *             @OA\Property(property="provincia_id", type="integer", example=1),
-     *             @OA\Property(property="ciudad_id", type="integer", example=1),
-     *             @OA\Property(property="direccion", type="string", maxLength=255, nullable=true, example="Calle Falsa 123", description="Campo de prueba - no se guarda en BD"),
-     *             @OA\Property(property="descripcion", type="string", maxLength=255, nullable=true, example="Usuario de prueba"),
-     *             @OA\Property(property="horas_saldo", type="integer", nullable=true, example=5),
-     *             @OA\Property(property="valoracion", type="integer", nullable=true, example=0)
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"nombre","apellido","email","password","provincia_id","ciudad_id"},
+     *                 @OA\Property(property="nombre", type="string", maxLength=100, example="Pedro"),
+     *                 @OA\Property(property="apellido", type="string", maxLength=100, example="Garcia"),
+     *                 @OA\Property(property="email", type="string", format="email", maxLength=150, example="pedro.garcia@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", minLength=6, example="password123"),
+     *                 @OA\Property(property="rol_id", type="integer", example=3, description="Siempre se asigna rol 3 (no es necesario enviarlo)"),
+     *                 @OA\Property(property="provincia_id", type="integer", example=1),
+     *                 @OA\Property(property="ciudad_id", type="integer", example=1),
+     *                 @OA\Property(property="direccion", type="string", maxLength=255, nullable=true, example="Calle Falsa 123", description="Campo de prueba - no se guarda en BD"),
+     *                 @OA\Property(property="descripcion", type="string", maxLength=255, nullable=true, example="Usuario de prueba"),
+     *                 @OA\Property(property="horas_saldo", type="integer", nullable=true, example=5),
+     *                 @OA\Property(property="valoracion", type="integer", nullable=true, example=0),
+     *                 @OA\Property(property="img", type="string", format="binary", description="Imagen de perfil")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -54,7 +59,8 @@ class AuthController extends Controller{
      *                 @OA\Property(property="ciudad_id", type="integer", example=1),
      *                 @OA\Property(property="descripcion", type="string", example="Usuario de prueba"),
      *                 @OA\Property(property="horas_saldo", type="integer", example=5),
-     *                 @OA\Property(property="valoracion", type="integer", example=0)
+     *                 @OA\Property(property="valoracion", type="integer", example=0),
+     *                 @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
      *             )
      *         )
      *     ),
@@ -82,10 +88,19 @@ class AuthController extends Controller{
             'horas_saldo' => 'nullable|integer',
             'valoracion' => 'nullable|integer',
             'direccion' => 'nullable|string|max:255', // Acepta pero no guarda en BD (testing)
+            'img' => 'nullable|image|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+
+        // Subir imagen a Cloudinary y obtener url de almacenaje
+        $url = null;
+        if ($request->hasFile('img')) {
+            $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+            $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
+            $url = $result['secure_url'];
         }
 
         // Creación del usuario
@@ -100,6 +115,8 @@ class AuthController extends Controller{
             'descripcion' => $request->descripcion,
             'horas_saldo' => $request->horas_saldo ?? 5, // Valor por defecto si no se envía
             'valoracion' => $request->valoracion ?? 0,
+            'ruta_img' => $url,
+            //'direccion' => $request->direccion,
         ]);
 
         // Cargar relaciones (provincia, ciudad, rol)

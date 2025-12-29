@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
 use Exception;
 
 class ServicioController extends Controller
@@ -38,7 +39,8 @@ class ServicioController extends Controller
      *                     @OA\Property(property="provincia", type="integer", example=3),
      *                     @OA\Property(property="ciudad", type="integer", example=3),
      *                     @OA\Property(property="horas_estimadas", type="integer", example=2),
-     *                     @OA\Property(property="estado", type="string", example="activo")
+     *                     @OA\Property(property="estado", type="string", example="activo"),
+     *                     @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
      *                 )
      *             )
      *         )
@@ -222,17 +224,21 @@ class ServicioController extends Controller
      *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"usuario_id","categoria_id","tipo","titulo","descripcion","provincia_id","ciudad_id","horas_estimadas"},
-     *             @OA\Property(property="usuario_id", type="integer", example=1),
-     *             @OA\Property(property="categoria_id", type="integer", example=1),
-     *             @OA\Property(property="tipo", type="string", example="oferta", description="oferta o demanda"),
-     *             @OA\Property(property="titulo", type="string", example="Clases de matemáticas"),
-     *             @OA\Property(property="descripcion", type="string", example="Ofrezco clases particulares de matemáticas para ESO y Bachillerato"),
-     *             @OA\Property(property="provincia_id", type="integer", example=3),
-     *             @OA\Property(property="ciudad_id", type="integer", example=3),
-     *             @OA\Property(property="horas_estimadas", type="integer", example=2),
-     *             @OA\Property(property="estado", type="string", example="activo", description="activo, en_proceso, finalizado o cancelado")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"usuario_id","categoria_id","tipo","titulo","descripcion","provincia_id","ciudad_id","horas_estimadas"},
+     *                 @OA\Property(property="usuario_id", type="integer", example=1),
+     *                 @OA\Property(property="categoria_id", type="integer", example=1),
+     *                 @OA\Property(property="tipo", type="string", example="oferta", description="oferta o demanda"),
+     *                 @OA\Property(property="titulo", type="string", example="Clases de matemáticas"),
+     *                 @OA\Property(property="descripcion", type="string", example="Ofrezco clases particulares de matemáticas para ESO y Bachillerato"),
+     *                 @OA\Property(property="provincia_id", type="integer", example=3),
+     *                 @OA\Property(property="ciudad_id", type="integer", example=3),
+     *                 @OA\Property(property="horas_estimadas", type="integer", example=2),
+     *                 @OA\Property(property="estado", type="string", example="activo", description="activo, en_proceso, finalizado o cancelado"),
+     *                 @OA\Property(property="img", type="string", format="binary", description="Imagen del servicio")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=201, description="Servicio creado correctamente"),
@@ -253,7 +259,16 @@ class ServicioController extends Controller
                 'ciudad_id' => 'required|integer|exists:ciudades,id',
                 'horas_estimadas' => 'required|integer|min:1',
                 'estado' => 'nullable|string|in:activo,en_proceso,finalizado,cancelado',
+                'img' => 'nullable|image|max:2048',
             ]);
+            
+            // Subir imagen a Cloudinary y obtener url de almacenaje
+            $url = null;
+            if ($request->hasFile('img')) {
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
+                $url = $result['secure_url'];
+            }
 
             $servicio = Servicio::create([
                 'usuario_id' => $validated['usuario_id'],
@@ -265,6 +280,7 @@ class ServicioController extends Controller
                 'ciudad_id' => $validated['ciudad_id'],
                 'horas_estimadas' => $validated['horas_estimadas'],
                 'estado' => $validated['estado'] ?? 'activo',
+                'ruta_img' => $url,
             ]);
 
             // Cargar relaciones para devolverlas en la respuesta
@@ -312,16 +328,21 @@ class ServicioController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="usuario_id", type="integer", example=1),
-     *             @OA\Property(property="categoria_id", type="integer", example=1),
-     *             @OA\Property(property="tipo", type="string", example="oferta"),
-     *             @OA\Property(property="titulo", type="string", example="Clases de matemáticas avanzadas"),
-     *             @OA\Property(property="descripcion", type="string", example="Clases particulares actualizadas"),
-     *             @OA\Property(property="provincia_id", type="integer", example=3),
-     *             @OA\Property(property="ciudad_id", type="integer", example=3),
-     *             @OA\Property(property="horas_estimadas", type="integer", example=3),
-     *             @OA\Property(property="estado", type="string", example="activo", description="activo, en_proceso, finalizado o cancelado")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="usuario_id", type="integer", example=1),
+     *                 @OA\Property(property="categoria_id", type="integer", example=1),
+     *                 @OA\Property(property="tipo", type="string", example="oferta"),
+     *                 @OA\Property(property="titulo", type="string", example="Clases de matemáticas avanzadas"),
+     *                 @OA\Property(property="descripcion", type="string", example="Clases particulares actualizadas"),
+     *                 @OA\Property(property="provincia_id", type="integer", example=3),
+     *                 @OA\Property(property="ciudad_id", type="integer", example=3),
+     *                 @OA\Property(property="horas_estimadas", type="integer", example=3),
+     *                 @OA\Property(property="estado", type="string", example="activo", description="activo, en_proceso, finalizado o cancelado"),
+     *                 @OA\Property(property="img", type="string", format="binary", description="Nueva imagen del servicio"),
+     *                 @OA\Property(property="_method", type="string", example="PUT", description="Necesario para simular PUT en form-data")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="Servicio actualizado correctamente"),
@@ -343,6 +364,7 @@ class ServicioController extends Controller
                 'ciudad_id' => 'sometimes|integer|exists:ciudades,id',
                 'horas_estimadas' => 'sometimes|integer|min:1',
                 'estado' => 'sometimes|string|in:activo,en_proceso,finalizado,cancelado',
+                'img' => 'sometimes|nullable|image|max:2048',
             ]);
 
             if (isset($validated['usuario_id'])) {
@@ -371,6 +393,11 @@ class ServicioController extends Controller
             }
             if (isset($validated['estado'])) {
                 $servicio->estado = $validated['estado'];
+            }
+            if ($request->hasFile('img')) {
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
+                $servicio->ruta_img = $result['secure_url'];
             }
 
             $servicio->save();

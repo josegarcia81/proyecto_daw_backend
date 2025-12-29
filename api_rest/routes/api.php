@@ -12,23 +12,14 @@ use App\Http\Controllers\MensajeController;
 
 /**
  * API Routes
- * Here is where you can register API routes for your application. These
- * routes are loaded by the RouteServiceProvider within a group which
- * is assigned the "api" middleware group. Enjoy building your API!
- * 
- */
+*/
 
 ///////////////////////////////////////////////////////////////////////////
-// Rutas públicas de autenticación
+// Rutas públicas de registro y autenticación
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Ruta developer para inspeccionar BBDD (SOLO ENTORNO LOCAL)
-// Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
-// Ruta developer para obtener tablas
-// Route::get('getTables', [CommonController::class, 'getAllTables']);
-
-// Rutas protegidas que requieren autenticación
+// Rutas protegidas que requieren autenticación/token
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -92,11 +83,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('mensaje/{mensaje}', [MensajeController::class, 'deleteMensaje']);
 });
 
-    Route::get('getProvincias', [CommonController::class, 'getProvincias']);
-    // Ruta para obtener poblaciones
-    Route::get('getPoblaciones', [CommonController::class, 'getPoblaciones']);
+// Rutas publicas para obtener datos de provincias y poblaciones
+Route::get('getProvincias', [CommonController::class, 'getProvincias']);
+Route::get('getPoblaciones', [CommonController::class, 'getPoblaciones']);
 
-// Ruta para obtener la documentación de la API
+// Ruta publica para obtener la documentación de la API
 Route::get('/api-docs', function () {
     return view('api-docs');
 });
+
+// Rutas developer
+//  Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
+// Route::get('/developergetTables', [CommonController::class, 'getAllTables']);

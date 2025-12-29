@@ -25,6 +25,7 @@ class Servicio extends Model
         'ciudad_id',
         'horas_estimadas',
         'estado',
+        'ruta_img'
     ];
     
     protected $casts = [
@@ -33,6 +34,7 @@ class Servicio extends Model
         'provincia_id' => 'integer',
         'ciudad_id' => 'integer',
         'horas_estimadas' => 'integer',
+        'ruta_img' => 'string',
     ];
     
     protected $attributes = [

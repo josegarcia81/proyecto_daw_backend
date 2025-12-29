@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Cloudinary\Cloudinary;
 use Exception;
 
 class UserController extends Controller
@@ -39,7 +40,8 @@ class UserController extends Controller
      *                     @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
      *                     @OA\Property(property="horas_saldo", type="integer", example=5),
      *                     @OA\Property(property="valoracion", type="integer", example=0),
-     *                     @OA\Property(property="rol_id", type="integer", example=1)
+     *                     @OA\Property(property="rol_id", type="integer", example=1),
+     *                     @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
      *                 )
      *             )
      *         )
@@ -66,7 +68,9 @@ class UserController extends Controller
                                 'descripcion', 
                                 'horas_saldo', 
                                 'valoracion', 
-                                'rol_id')->get();
+                                'rol_id',
+                                'ruta_img',
+                                'direccion')->get();
 
             return response()->json([
                 'status' => 'success',
@@ -118,7 +122,8 @@ class UserController extends Controller
      *                 @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
      *                 @OA\Property(property="horas_saldo", type="integer", example=5),
      *                 @OA\Property(property="valoracion", type="integer", example=0),
-     *                 @OA\Property(property="rol_id", type="integer", example=1)
+     *                 @OA\Property(property="rol_id", type="integer", example=1),
+     *                 @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
      *             )
      *         )
      *     ),
@@ -175,18 +180,23 @@ class UserController extends Controller
      *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nombre","apellido","email","password","rol_id"},
-     *             @OA\Property(property="nombre", type="string", example="Pedro"),
-     *             @OA\Property(property="apellido", type="string", example="Garcia"),
-     *             @OA\Property(property="email", type="string", example="pedro.garcia@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="secreto123"),
-     *             @OA\Property(property="provincia_id", type="integer", example=1),
-     *             @OA\Property(property="ciudad_id", type="integer", example=1),
-     *             @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
-     *             @OA\Property(property="horas_saldo", type="integer", example=5),
-     *             @OA\Property(property="valoracion", type="integer", example=0),
-     *             @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"nombre","apellido","email","password","rol_id"},
+     *                 @OA\Property(property="nombre", type="string", example="Pedro"),
+     *                 @OA\Property(property="apellido", type="string", example="Garcia"),
+     *                 @OA\Property(property="email", type="string", example="pedro.garcia@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="secreto123"),
+     *                 @OA\Property(property="provincia_id", type="integer", example=1),
+     *                 @OA\Property(property="ciudad_id", type="integer", example=1),
+     *                 @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
+     *                 @OA\Property(property="horas_saldo", type="integer", example=5),
+     *                 @OA\Property(property="valoracion", type="integer", example=0),
+     *                 @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3"),
+     *                 @OA\Property(property="img", type="string", format="binary", description="Imagen de perfil"),
+     *                 @OA\Property(property="direccion", type="string", example="Dirección del usuario"),
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -237,7 +247,17 @@ class UserController extends Controller
                 'horas_saldo' => 'nullable|integer',
                 'valoracion' => 'nullable|numeric',
                 'rol_id' => 'required|integer|in:2,3', // Solo roles 2 o 3
+                'img' => 'nullable|image|max:2048',
+                'direccion' => 'nullable|string',
             ]);
+
+            // Subir imagen a Cloudinary y obtener url de almacenaje
+            $url = null;
+            if ($request->hasFile('img')) {
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
+                $url = $result['secure_url'];
+            }
 
             // Crear el nuevo usuario
             $user = User::create([
@@ -251,6 +271,8 @@ class UserController extends Controller
                 'horas_saldo' => $validated['horas_saldo'] ?? 5,
                 'valoracion' => $validated['valoracion'] ?? 0.0,
                 'rol_id' => $validated['rol_id'],
+                'ruta_img' => $url, // Guardar la URL de la imagen en Cloudinary
+                //'direccion' => $validated['direccion'] ?? null,
             ]);
 
             return response()->json([
@@ -295,17 +317,23 @@ class UserController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="nombre", type="string", example="Pedro"),
-     *             @OA\Property(property="apellido", type="string", example="Garcia"),
-     *             @OA\Property(property="email", type="string", example="pedro.garcia@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="nuevo_secreto123"),
-     *             @OA\Property(property="provincia_id", type="integer", example=1),
-     *             @OA\Property(property="ciudad_id", type="integer", example=1),
-     *             @OA\Property(property="descripcion", type="string", example="Descripción actualizada"),
-     *             @OA\Property(property="horas_saldo", type="integer", example=10),
-     *             @OA\Property(property="valoracion", type="integer", example=0),
-     *             @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="nombre", type="string", example="Pedro"),
+     *                 @OA\Property(property="apellido", type="string", example="Garcia"),
+     *                 @OA\Property(property="email", type="string", example="pedro.garcia@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="nuevo_secreto123"),
+     *                 @OA\Property(property="provincia_id", type="integer", example=1),
+     *                 @OA\Property(property="ciudad_id", type="integer", example=1),
+     *                 @OA\Property(property="descripcion", type="string", example="Descripción actualizada"),
+     *                 @OA\Property(property="horas_saldo", type="integer", example=10),
+     *                 @OA\Property(property="valoracion", type="integer", example=0),
+     *                 @OA\Property(property="rol_id", type="integer", example=2, description="Solo valores 2 o 3"),
+     *                 @OA\Property(property="img", type="string", format="binary", description="Nueva imagen de perfil"),
+     *                 @OA\Property(property="_method", type="string", example="PUT", description="Necesario para simular PUT en form-data"),
+     *                 @OA\Property(property="direccion", type="string", example="Dirección actualizada"),
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -350,6 +378,8 @@ class UserController extends Controller
                 'horas_saldo' => 'sometimes|nullable|integer',
                 'valoracion' => 'sometimes|nullable|numeric',
                 'rol_id' => 'sometimes|integer|in:2,3', // Solo roles 2 o 3
+                'img' => 'sometimes|nullable|image|max:2048',
+                //'direccion' => 'sometimes|nullable|string',
             ]);
 
             // Actualizar los datos del usuario
@@ -383,7 +413,17 @@ class UserController extends Controller
             if (isset($validated['rol_id'])) {
                 $user->rol_id = $validated['rol_id'];
             }
-
+            // Si hay una nueva imagen, subirla a Cloudinary y actualizar la URL
+            if ($request->hasFile('img')) {
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
+                $user->ruta_img = $result['secure_url'];
+            }
+            
+            // if (isset($validated['direccion'])) {
+            //     $user->direccion = $validated['direccion'];
+            // }
+            // Guardar los cambios
             $user->save();
 
             return response()->json([

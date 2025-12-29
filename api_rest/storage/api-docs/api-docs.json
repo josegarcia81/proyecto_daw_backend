@@ -2,9 +2,9 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Proyecto DAW Backend API",
-        "description": "API REST del Proyecto DAW. Esta API gestiona la lógica de negocio para la plataforma de intercambio de tiempo.\n *     \n *     Módulos incluidos:\n *     - **Autenticación**: Registro, login, logout y gestión de perfil.\n *     - **Usuarios**: Gestión completa de usuarios (CRUD).\n *     - **Servicios**: Gestión de ofertas y demandas de servicios.\n *     - **Transacciones**: Control de intercambios de tiempo entre usuarios.\n *     - **Valoraciones**: Sistema de reputación y feedback.\n *     - **Mensajes**: Sistema de mensajería interna.\n *     - **Common**: Recursos compartidos (provincias, poblaciones, etc.).",
+        "description": "API REST del Proyecto DAW. Esta API gestiona la lógica de negocio para la plataforma de intercambio de tiempo.\n *     \n *     Módulos incluidos:\n *     - Autenticación: Registro, login, logout y gestión de perfil.\n *     - Usuarios: Gestión completa de usuarios (CRUD).\n *     - Servicios: Gestión de ofertas y demandas de servicios.\n *     - Transacciones: Control de intercambios de tiempo entre usuarios.\n *     - Valoraciones: Sistema de reputación y feedback.\n *     - Mensajes: Sistema de mensajería interna.\n *     - Common: Recursos compartidos (provincias, poblaciones, etc.).",
         "contact": {
-            "email": "soporte@proyectodaw.com"
+            "email": "josegarcia@birt.eus"
         },
         "version": "1.0.0"
     },
@@ -31,7 +31,7 @@
                     "description": "Datos del nuevo usuario",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "nombre",
@@ -99,6 +99,11 @@
                                         "type": "integer",
                                         "example": 0,
                                         "nullable": true
+                                    },
+                                    "img": {
+                                        "description": "Imagen de perfil",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -166,6 +171,11 @@
                                                 "valoracion": {
                                                     "type": "integer",
                                                     "example": 0
+                                                },
+                                                "ruta_img": {
+                                                    "type": "string",
+                                                    "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"
@@ -1069,6 +1079,11 @@
                                                     "estado": {
                                                         "type": "string",
                                                         "example": "activo"
+                                                    },
+                                                    "ruta_img": {
+                                                        "type": "string",
+                                                        "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                                                        "nullable": true
                                                     }
                                                 },
                                                 "type": "object"
@@ -1099,7 +1114,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "usuario_id",
@@ -1149,6 +1164,11 @@
                                         "description": "activo, en_proceso, finalizado o cancelado",
                                         "type": "string",
                                         "example": "activo"
+                                    },
+                                    "img": {
+                                        "description": "Imagen del servicio",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -1374,7 +1394,7 @@
                 "requestBody": {
                     "required": false,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "usuario_id": {
@@ -1413,6 +1433,16 @@
                                         "description": "activo, en_proceso, finalizado o cancelado",
                                         "type": "string",
                                         "example": "activo"
+                                    },
+                                    "img": {
+                                        "description": "Nueva imagen del servicio",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "_method": {
+                                        "description": "Necesario para simular PUT en form-data",
+                                        "type": "string",
+                                        "example": "PUT"
                                     }
                                 },
                                 "type": "object"
@@ -1867,6 +1897,11 @@
                                                     "rol_id": {
                                                         "type": "integer",
                                                         "example": 1
+                                                    },
+                                                    "ruta_img": {
+                                                        "type": "string",
+                                                        "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                                                        "nullable": true
                                                     }
                                                 },
                                                 "type": "object"
@@ -1918,7 +1953,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "nombre",
@@ -1969,6 +2004,15 @@
                                         "description": "Solo valores 2 o 3",
                                         "type": "integer",
                                         "example": 2
+                                    },
+                                    "img": {
+                                        "description": "Imagen de perfil",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Dirección del usuario"
                                     }
                                 },
                                 "type": "object"
@@ -2143,6 +2187,11 @@
                                                 "rol_id": {
                                                     "type": "integer",
                                                     "example": 1
+                                                },
+                                                "ruta_img": {
+                                                    "type": "string",
+                                                    "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"
@@ -2209,7 +2258,7 @@
                 "requestBody": {
                     "required": false,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "nombre": {
@@ -2253,6 +2302,20 @@
                                         "description": "Solo valores 2 o 3",
                                         "type": "integer",
                                         "example": 2
+                                    },
+                                    "img": {
+                                        "description": "Nueva imagen de perfil",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "_method": {
+                                        "description": "Necesario para simular PUT en form-data",
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Dirección actualizada"
                                     }
                                 },
                                 "type": "object"

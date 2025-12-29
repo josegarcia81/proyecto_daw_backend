@@ -37,6 +37,8 @@ class User extends Authenticatable
         'horas_saldo',
         'valoracion',
         'rol_id',
+        'ruta_img',
+        'direccion'
     ];
 
     /**
@@ -66,10 +68,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'horas_saldo' => 'integer',
-        'valoraciones' => 'float',
+        'valoracion' => 'float', // Ojo cambiado de valoraciones a valoracion
         'provincia_id' => 'integer',
         'ciudad_id' => 'integer',
         'rol_id' => 'integer',
+        'ruta_img' => 'string',
+        'direccion' => 'string',
     ];
 
     /**

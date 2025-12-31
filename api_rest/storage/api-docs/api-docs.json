@@ -2280,11 +2280,6 @@
                                         "type": "string",
                                         "example": "pedro.garcia@example.com"
                                     },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "nuevo_secreto123"
-                                    },
                                     "provincia_id": {
                                         "type": "integer",
                                         "example": 1

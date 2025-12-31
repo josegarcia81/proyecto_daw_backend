@@ -326,7 +326,6 @@ class UserController extends Controller
      *                 @OA\Property(property="nombre", type="string", example="Pedro"),
      *                 @OA\Property(property="apellido", type="string", example="Garcia"),
      *                 @OA\Property(property="email", type="string", example="pedro.garcia@example.com"),
-     *                 @OA\Property(property="password", type="string", format="password", example="nuevo_secreto123"),
      *                 @OA\Property(property="provincia_id", type="integer", example=1),
      *                 @OA\Property(property="ciudad_id", type="integer", example=1),
      *                 @OA\Property(property="descripcion", type="string", example="Descripción actualizada"),
@@ -374,7 +373,6 @@ class UserController extends Controller
                 'nombre' => 'sometimes|string|max:100',
                 'apellido' => 'sometimes|string|max:100',
                 'email' => 'sometimes|string|email|max:150|unique:usuarios,email,' . $user->id,
-                'password' => 'sometimes|string|min:6',
                 'provincia_id' => 'sometimes|nullable|integer|exists:provincias,id',
                 'ciudad_id' => 'sometimes|nullable|integer|exists:ciudades,id',
                 'descripcion' => 'sometimes|nullable|string',
@@ -394,9 +392,6 @@ class UserController extends Controller
             }
             if (isset($validated['email'])) {
                 $user->email = $validated['email'];
-            }
-            if (isset($validated['password'])) {
-                $user->password = bcrypt($validated['password']);
             }
             if (isset($validated['provincia_id'])) {
                 $user->provincia_id = $validated['provincia_id'];

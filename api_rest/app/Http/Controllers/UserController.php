@@ -40,8 +40,9 @@ class UserController extends Controller
      *                     @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
      *                     @OA\Property(property="horas_saldo", type="integer", example=5),
      *                     @OA\Property(property="valoracion", type="integer", example=0),
-     *                     @OA\Property(property="rol_id", type="integer", example=1),
+     *                     @OA\Property(property="rol_id", type="integer", example=3),
      *                     @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
+     *                     @OA\Property(property="direccion", type="string", example="Dirección del usuario")
      *                 )
      *             )
      *         )
@@ -70,7 +71,7 @@ class UserController extends Controller
                                 'valoracion', 
                                 'rol_id',
                                 'ruta_img',
-                                //'direccion'
+                                'direccion'
                                 )->get();
 
             return response()->json([
@@ -123,8 +124,9 @@ class UserController extends Controller
      *                 @OA\Property(property="descripcion", type="string", example="Descripción del usuario"),
      *                 @OA\Property(property="horas_saldo", type="integer", example=5),
      *                 @OA\Property(property="valoracion", type="integer", example=0),
-     *                 @OA\Property(property="rol_id", type="integer", example=1),
-     *                 @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
+     *                 @OA\Property(property="rol_id", type="integer", example=3),
+     *                 @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true),
+     *                 @OA\Property(property="direccion", type="string", example="Dirección del usuario")
      *             )
      *         )
      *     ),
@@ -242,14 +244,14 @@ class UserController extends Controller
                 'apellido' => 'required|string|max:100',
                 'email' => 'required|string|email|max:150|unique:usuarios,email',
                 'password' => 'required|string|min:6',
-                'provincia_id' => 'nullable|integer|exists:provincia,id',
-                'ciudad_id' => 'nullable|integer|exists:ciudad,id',
+                'provincia_id' => 'nullable|integer|exists:provincias,id',
+                'ciudad_id' => 'nullable|integer|exists:ciudades,id',
                 'descripcion' => 'nullable|string',
                 'horas_saldo' => 'nullable|integer',
                 'valoracion' => 'nullable|numeric',
                 'rol_id' => 'required|integer|in:2,3', // Solo roles 2 o 3
                 'img' => 'nullable|image|max:2048',
-                'direccion' => 'nullable|string',
+                'direccion' => 'required|string',
             ]);
 
             // Subir imagen a Cloudinary y obtener url de almacenaje
@@ -273,7 +275,7 @@ class UserController extends Controller
                 'valoracion' => $validated['valoracion'] ?? 0.0,
                 'rol_id' => $validated['rol_id'],
                 'ruta_img' => $url, // Guardar la URL de la imagen en Cloudinary
-                //'direccion' => $validated['direccion'] ?? null,
+                'direccion' => $validated['direccion'],
             ]);
 
             return response()->json([
@@ -380,7 +382,7 @@ class UserController extends Controller
                 'valoracion' => 'sometimes|nullable|numeric',
                 'rol_id' => 'sometimes|integer|in:2,3', // Solo roles 2 o 3
                 'img' => 'sometimes|nullable|image|max:2048',
-                //'direccion' => 'sometimes|nullable|string',
+                'direccion' => 'sometimes|nullable|string',
             ]);
 
             // Actualizar los datos del usuario
@@ -420,10 +422,9 @@ class UserController extends Controller
                 $result = $cloudinary->uploadApi()->upload($request->file('img')->getRealPath());
                 $user->ruta_img = $result['secure_url'];
             }
-            
-            // if (isset($validated['direccion'])) {
-            //     $user->direccion = $validated['direccion'];
-            // }
+            if (isset($validated['direccion'])) {
+                $user->direccion = $validated['direccion'];
+            }
             // Guardar los cambios
             $user->save();
 

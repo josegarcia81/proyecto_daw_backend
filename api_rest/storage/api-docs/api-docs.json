@@ -1896,12 +1896,16 @@
                                                     },
                                                     "rol_id": {
                                                         "type": "integer",
-                                                        "example": 1
+                                                        "example": 3
                                                     },
                                                     "ruta_img": {
                                                         "type": "string",
                                                         "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
                                                         "nullable": true
+                                                    },
+                                                    "direccion": {
+                                                        "type": "string",
+                                                        "example": "Dirección del usuario"
                                                     }
                                                 },
                                                 "type": "object"
@@ -2186,12 +2190,16 @@
                                                 },
                                                 "rol_id": {
                                                     "type": "integer",
-                                                    "example": 1
+                                                    "example": 3
                                                 },
                                                 "ruta_img": {
                                                     "type": "string",
                                                     "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
                                                     "nullable": true
+                                                },
+                                                "direccion": {
+                                                    "type": "string",
+                                                    "example": "Dirección del usuario"
                                                 }
                                             },
                                             "type": "object"
@@ -2464,6 +2472,17 @@
                 ],
                 "summary": "Cambiar contraseña del usuario",
                 "operationId": "b86fcb6de14591c8ecbf34d6b3d15b1e",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2474,6 +2493,7 @@
                                 ],
                                 "properties": {
                                     "password": {
+                                        "description": "Nueva contraseña (mínimo 6 caracteres)",
                                         "type": "string",
                                         "format": "password",
                                         "example": "nueva_contraseña123"
@@ -2486,13 +2506,128 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Contraseña actualizada"
+                        "description": "Contraseña actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contraseña cambiada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "La contraseña es la misma"
+                        "description": "La nueva contraseña es igual a la actual",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "La nueva contraseña no puede ser igual a la actual"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\User]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 422
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error de validación"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Error del servidor"
+                        "description": "Error del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocurrió un error al cambiar la contraseña"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [

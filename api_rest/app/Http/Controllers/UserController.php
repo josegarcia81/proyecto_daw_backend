@@ -41,7 +41,7 @@ class UserController extends Controller
      *                     @OA\Property(property="horas_saldo", type="integer", example=5),
      *                     @OA\Property(property="valoracion", type="integer", example=0),
      *                     @OA\Property(property="rol_id", type="integer", example=3),
-     *                     @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true)
+     *                     @OA\Property(property="ruta_img", type="string", example="https://res.cloudinary.com/demo/image/upload/sample.jpg", nullable=true),
      *                     @OA\Property(property="direccion", type="string", example="Dirección del usuario")
      *                 )
      *             )
@@ -375,8 +375,8 @@ class UserController extends Controller
                 'apellido' => 'sometimes|string|max:100',
                 'email' => 'sometimes|string|email|max:150|unique:usuarios,email,' . $user->id,
                 'password' => 'sometimes|string|min:6',
-                'provincia_id' => 'sometimes|nullable|integer|exists:provincia,id',
-                'ciudad_id' => 'sometimes|nullable|integer|exists:ciudad,id',
+                'provincia_id' => 'sometimes|nullable|integer|exists:provincias,id',
+                'ciudad_id' => 'sometimes|nullable|integer|exists:ciudades,id',
                 'descripcion' => 'sometimes|nullable|string',
                 'horas_saldo' => 'sometimes|nullable|integer',
                 'valoracion' => 'sometimes|nullable|numeric',
@@ -525,16 +525,66 @@ class UserController extends Controller
      *     summary="Cambiar contraseña del usuario",
      *     tags={"Usuarios"},
      *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         description="ID del usuario",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"password"},
-     *             @OA\Property(property="password", type="string", format="password", example="nueva_contraseña123")
+     *             @OA\Property(property="password", type="string", format="password", example="nueva_contraseña123", description="Nueva contraseña (mínimo 6 caracteres)")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Contraseña actualizada"),
-     *     @OA\Response(response=400, description="La contraseña es la misma"),
-     *     @OA\Response(response=500, description="Error del servidor")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Contraseña actualizada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(property="time", type="string", format="date-time"),
+     *             @OA\Property(property="message", type="string", example="Contraseña cambiada correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="La nueva contraseña es igual a la actual",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="code", type="integer", example=400),
+     *             @OA\Property(property="time", type="string", format="date-time"),
+     *             @OA\Property(property="message", type="string", example="La nueva contraseña no puede ser igual a la actual")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No query results for model [App\\Models\\User]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="code", type="integer", example=422),
+     *             @OA\Property(property="message", type="string", example="Error de validación")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="code", type="integer", example=500),
+     *             @OA\Property(property="time", type="string", format="date-time"),
+     *             @OA\Property(property="message", type="string", example="Ocurrió un error al cambiar la contraseña")
+     *         )
+     *     )
      * )
      */
     public function changePassword(Request $request, User $user)

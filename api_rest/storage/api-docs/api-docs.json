@@ -39,7 +39,8 @@
                                     "email",
                                     "password",
                                     "provincia_id",
-                                    "ciudad_id"
+                                    "ciudad_id",
+                                    "direccion"
                                 ],
                                 "properties": {
                                     "nombre": {
@@ -78,11 +79,9 @@
                                         "example": 1
                                     },
                                     "direccion": {
-                                        "description": "Campo de prueba - no se guarda en BD",
                                         "type": "string",
                                         "maxLength": 255,
-                                        "example": "Calle Falsa 123",
-                                        "nullable": true
+                                        "example": "Calle Falsa 123"
                                     },
                                     "descripcion": {
                                         "type": "string",

@@ -24,7 +24,7 @@ class AuthController extends Controller{
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"nombre","apellido","email","password","provincia_id","ciudad_id"},
+     *                 required={"nombre","apellido","email","password","provincia_id","ciudad_id","direccion"},
      *                 @OA\Property(property="nombre", type="string", maxLength=100, example="Pedro"),
      *                 @OA\Property(property="apellido", type="string", maxLength=100, example="Garcia"),
      *                 @OA\Property(property="email", type="string", format="email", maxLength=150, example="pedro.garcia@example.com"),
@@ -32,7 +32,7 @@ class AuthController extends Controller{
      *                 @OA\Property(property="rol_id", type="integer", example=3, description="Siempre se asigna rol 3 (no es necesario enviarlo)"),
      *                 @OA\Property(property="provincia_id", type="integer", example=1),
      *                 @OA\Property(property="ciudad_id", type="integer", example=1),
-     *                 @OA\Property(property="direccion", type="string", maxLength=255, nullable=true, example="Calle Falsa 123", description="Campo de prueba - no se guarda en BD"),
+     *                 @OA\Property(property="direccion", type="string", maxLength=255, example="Calle Falsa 123"),
      *                 @OA\Property(property="descripcion", type="string", maxLength=255, nullable=true, example="Usuario de prueba"),
      *                 @OA\Property(property="horas_saldo", type="integer", nullable=true, example=5),
      *                 @OA\Property(property="valoracion", type="integer", nullable=true, example=0),
@@ -87,7 +87,7 @@ class AuthController extends Controller{
             'descripcion' => 'nullable|string|max:255',
             'horas_saldo' => 'nullable|integer',
             'valoracion' => 'nullable|integer',
-            'direccion' => 'nullable|string|max:255', // Acepta pero no guarda en BD (testing)
+            'direccion' => 'required|string|max:255',
             'img' => 'nullable|image|max:2048',
         ]);
 
@@ -116,7 +116,7 @@ class AuthController extends Controller{
             'horas_saldo' => $request->horas_saldo ?? 5, // Valor por defecto si no se envía
             'valoracion' => $request->valoracion ?? 0,
             'ruta_img' => $url,
-            //'direccion' => $request->direccion,
+            'direccion' => $request->direccion,
         ]);
 
         // Cargar relaciones (provincia, ciudad, rol)

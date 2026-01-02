@@ -92,6 +92,13 @@ Route::get('/api-docs', function () {
     return view('api-docs');
 });
 
+// Ruta publica para mantener el servicio vivo
+Route::get('/alive', function () {
+    return response()->json([
+        'message' => 'Service is alive',
+    ]);
+});
+
 // Rutas developer
 //  Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
 // Route::get('/developergetTables', [CommonController::class, 'getAllTables']);

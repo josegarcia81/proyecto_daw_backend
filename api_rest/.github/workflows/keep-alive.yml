@@ -1,0 +1,16 @@
+name: Keep Render Service Alive
+
+on:
+    schedule:
+        - cron: '*/10 * * * *' # Ejecuta cada 10 minutos
+
+workflow_dispatch:
+
+jobs:
+    keep-alive-ping:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Ping al Contenedor-Backend # Realiza un ping al contenedor de Render
+              run: |
+                curl -s https://proyecto-daw-backend.onrender.com/api/alive
+

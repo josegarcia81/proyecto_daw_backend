@@ -16,9 +16,9 @@ return [
             ],
             'paths' => [
                 /*
-                 * Edit to include full URL in ui for assets
+                 * Edit to include full URL in ui for assets // Cambiado para que no aparezca la URL completa
                  */
-                'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
+                'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', false),
 
                 /*
                 * Edit to set path where swagger ui assets should be stored

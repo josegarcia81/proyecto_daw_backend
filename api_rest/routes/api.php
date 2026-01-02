@@ -100,5 +100,5 @@ Route::get('/alive', function () {
 });
 
 // Rutas developer
-//  Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
+// Route::get('/developer/db-dump', [CommonController::class, 'getFullDatabaseDump']);
 // Route::get('/developergetTables', [CommonController::class, 'getAllTables']);

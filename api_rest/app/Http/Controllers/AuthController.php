@@ -80,7 +80,7 @@ class AuthController extends Controller{
             'nombre' => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
             'email' => 'required|string|email|max:150|unique:usuarios,email',
-            'password' => 'required|string|min:6', // Requiere campo 'password_confirmation' si se aniade => |confirmed,( eliminado, se confirma en frontend).
+            'password' => 'required|string|min:6', // Requiere campo 'password_confirmation', si se aniade => |confirmed,( eliminado, se confirma en frontend).
             'rol_id' => 'nullable|integer|exists:roles,id', // Opcional, se fuerza a 3
             'provincia_id' => 'required|integer|exists:provincias,id',
             'ciudad_id' => 'required|integer|exists:ciudades,id',

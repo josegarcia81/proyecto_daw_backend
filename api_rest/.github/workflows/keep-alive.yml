@@ -12,4 +12,3 @@ jobs:
       - name: Ping al Contenedor-Backend # Realiza un ping al contenedor de Render
         run: |
           curl -s https://proyecto-daw-backend.onrender.com/api/alive
-

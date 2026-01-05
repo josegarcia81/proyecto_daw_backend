@@ -13,7 +13,10 @@ class Servicio extends Model
     public $incrementing = true; // Definir que la clave primaria es autoincrementable
     protected $keyType = 'int'; // Definir que la clave primaria es de tipo entero
     protected $table = 'servicios';
-    public $timestamps = false;
+    // public $timestamps = false;
+
+    // Solo tiene created_at, no updated_at
+    const UPDATED_AT = null;
     
     protected $fillable = [
         'usuario_id',
@@ -35,6 +38,7 @@ class Servicio extends Model
         'ciudad_id' => 'integer',
         'horas_estimadas' => 'integer',
         'ruta_img' => 'string',
+        'created_at' => 'datetime'
     ];
     
     protected $attributes = [

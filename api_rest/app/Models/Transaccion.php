@@ -29,7 +29,7 @@ class Transaccion extends Model
         'usuario_ofertante_id' => 'integer',
         'horas' => 'integer',
         'fecha_confirmacion' => 'datetime',
-        'created_at' => 'datetime',
+        'created_at' => 'datetime'
     ];
     
     protected $attributes = [

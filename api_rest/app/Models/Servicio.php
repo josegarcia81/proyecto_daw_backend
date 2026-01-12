@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Servicio extends Model
 {
-        /**
-     * The primary key type and auto-incrementing.
+    /**
+     * Tipo de clave primaria y autoincremento.
      */
     protected $primaryKey = 'id'; // Definir nombre de la clave primaria
     public $incrementing = true; // Definir que la clave primaria es autoincrementable
@@ -15,9 +15,17 @@ class Servicio extends Model
     protected $table = 'servicios';
     // public $timestamps = false;
 
-    // Solo tiene created_at, no updated_at
+    /**
+     * Gestión de timestamps.
+     * Solo tiene created_at, no updated_at.
+     */
     const UPDATED_AT = null;
     
+    /**
+     * Atributos asignables masivamente.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'usuario_id',
         'categoria_id',
@@ -31,6 +39,11 @@ class Servicio extends Model
         'ruta_img'
     ];
     
+    /**
+     * Los atributos que deben ser convertidos (casts).
+     *
+     * @var array
+     */
     protected $casts = [
         'usuario_id' => 'integer',
         'categoria_id' => 'integer',
@@ -41,6 +54,11 @@ class Servicio extends Model
         'created_at' => 'datetime'
     ];
     
+    /**
+     * Valores por defecto de los atributos.
+     *
+     * @var array
+     */
     protected $attributes = [
         'estado' => 'activo', // Valor por defecto
     ];

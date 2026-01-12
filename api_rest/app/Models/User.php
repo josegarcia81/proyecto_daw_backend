@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
     /**
-     * The primary key type and auto-incrementing.
+     * Tipo de clave primaria y autoincremento.
      */
     protected $primaryKey = 'id'; // Definir nombre de la clave primaria
     public $incrementing = true; // Definir que la clave primaria es autoincrementable
@@ -22,7 +22,7 @@ class User extends Authenticatable
     protected $table = 'usuarios'; // Definir nombre de la tabla
     public $timestamps = false; // Desactivar timestamps porque la tabla en AWS no tiene created_at/updated_at
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que son asignables masivamente.
      *
      * @var list<string>
      */
@@ -42,7 +42,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Default attribute values.
+     * Valores por defecto de los atributos.
      *
      * @var array
      */
@@ -51,7 +51,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ocultarse para la serialización.
      *
      * @var list<string>
      */
@@ -61,7 +61,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Los atributos que deben ser convertidos (cast).
      *
      * @var array<string, string>
      */

@@ -7,13 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Mensaje extends Model
 {
     protected $table = 'mensajes';
+    /**
+     * Tipo de clave primaria y autoincremento.
+     */
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
-    
-    // Solo created_at, no updated_at
+
+    /**
+     * Gestión de timestamps.
+     * Solo tiene created_at, no updated_at.
+     */
     const UPDATED_AT = null;
     
+    /**
+     * Atributos asignables masivamente.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'emisor_id',
         'receptor_id',
@@ -22,6 +33,11 @@ class Mensaje extends Model
         'leido',
     ];
     
+    /**
+     * Los atributos que deben ser convertidos (casts).
+     *
+     * @var array
+     */
     protected $casts = [
         'emisor_id' => 'integer',
         'receptor_id' => 'integer',
@@ -30,6 +46,11 @@ class Mensaje extends Model
         'created_at' => 'datetime',
     ];
     
+    /**
+     * Valores por defecto de los atributos.
+     *
+     * @var array
+     */
     protected $attributes = [
         'leido' => false, // Valor por defecto
     ];

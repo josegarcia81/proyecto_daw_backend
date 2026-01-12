@@ -73,8 +73,7 @@ class AuthController extends Controller{
      *     )
      * )
      */
-    public function register(Request $request): JsonResponse
-    {
+    public function register(Request $request): JsonResponse{
         // Validación de los datos de entrada
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:100',
@@ -181,8 +180,7 @@ class AuthController extends Controller{
      *     )
      * )
      */
-    public function login(Request $request): JsonResponse
-    {
+    public function login(Request $request): JsonResponse{
         // Validación de credenciales
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
@@ -230,8 +228,7 @@ class AuthController extends Controller{
      *     )
      * )
      */
-    public function logout(Request $request): JsonResponse
-    {
+    public function logout(Request $request): JsonResponse{
         // Revoca el token que se usó para autenticar la solicitud actual
         $request->user()->currentAccessToken()->delete();
 

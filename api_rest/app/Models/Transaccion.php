@@ -7,13 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Transaccion extends Model
 {
     protected $table = 'transacciones';
+    /**
+     * Tipo de clave primaria y autoincremento.
+     */
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
-    
-    // Solo tiene created_at, no updated_at
+
+    /**
+     * Gestión de timestamps.
+     * Solo tiene created_at, no updated_at.
+     */
     const UPDATED_AT = null;
     
+    /**
+     * Atributos asignables masivamente.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'servicio_id',
         'usuario_solicitante_id',
@@ -23,6 +34,11 @@ class Transaccion extends Model
         'fecha_confirmacion',
     ];
     
+    /**
+     * Los atributos que deben ser convertidos (cats).
+     *
+     * @var array
+     */
     protected $casts = [
         'servicio_id' => 'integer',
         'usuario_solicitante_id' => 'integer',
@@ -32,6 +48,11 @@ class Transaccion extends Model
         'created_at' => 'datetime'
     ];
     
+    /**
+     * Valores por defecto de los atributos.
+     *
+     * @var array
+     */
     protected $attributes = [
         'estado' => 'pendiente', // Valor por defecto
     ];

@@ -382,17 +382,6 @@ Sistema de mensajería entre usuarios.
 
 ---
 
-## 🧪 Testing
-
-```bash
-# Ejecutar tests
-composer run test
-
-# O directamente con PHPUnit
-php artisan test
-```
-
----
 
 ## 🐳 Deployment con Docker
 
@@ -409,21 +398,7 @@ El proyecto incluye un `Dockerfile` optimizado para producción:
 - **Puerto**: Configurable mediante variable `PORT`
 
 ### Build y ejecución:
-
-```bash
-# Build
-docker build -t proyecto-daw-backend:latest .
-
-# Run
-docker run -d \
-  -p 10000:10000 \
-  -e PORT=10000 \
-  -e DB_HOST=tu_host_mysql \
-  -e DB_DATABASE=api_rest \
-  -e DB_USERNAME=usuario \
-  -e DB_PASSWORD=password \
-  proyecto-daw-backend:latest
-```
+- **Configuración**: Se indica en el dashboard de Render la localización del archivo Dockerfile y las variables de entorno necesarias.
 
 ---
 
